@@ -29,7 +29,7 @@ public class RedditRepository {
     this.redditService = redditService;
   }
 
-  public Subscription loadReddit(Observer<List<Child>> observer) {
+  public Subscription loadReddit(Observer<List<Data>> observer) {
     return redditService.getPosts()
         .map(Reddit::getData)
         .map(listing -> {
@@ -64,7 +64,7 @@ public class RedditRepository {
         .flatMap(Observable::from)
         .flatMap(childObservable -> childObservable)
         .map(Child::getData)
-        .map(Data::getTitle)
+        .toList()
         .subscribe(observer);
   }
 }
