@@ -23,19 +23,35 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
+import flow.Backstack;
+import flow.Flow;
 
 import static android.support.v4.widget.DrawerLayout.LOCK_MODE_LOCKED_CLOSED;
 import static android.widget.Toast.LENGTH_LONG;
 import static butterknife.ButterKnife.findById;
 
-public final class MainActivity extends BaseActivity {
+public final class MainActivity extends BaseActivity implements Flow.Listener {
 
   @Inject AppContainer appContainer;
   @Inject @SeenNavDrawer BooleanPreference seenNavDrawer;
 
+  @InjectView(R.id.content_frame) View container;
   @InjectView(R.id.nav_drawer_layout) DrawerLayout drawerLayout;
 
   private ActionBarDrawerToggle drawerToggle;
+
+  @OnClick(R.id.nav_drawer_home) void navigateHome() {
+
+  }
+
+  @OnClick(R.id.nav_drawer_stared) void navigateToStarred() {
+
+  }
+
+  @OnClick(R.id.nav_drawer_settings) void navigateToSettings() {
+
+  }
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -60,6 +76,10 @@ public final class MainActivity extends BaseActivity {
     // Handle your other action bar items...
 
     return super.onOptionsItemSelected(item);
+  }
+
+  @Override public void go(Backstack entries, Flow.Direction direction, Flow.Callback callback) {
+
   }
 
   private void setupNavigationDrawer() {
