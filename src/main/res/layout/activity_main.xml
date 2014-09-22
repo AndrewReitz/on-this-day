@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <!-- Main Content -->
-    <FrameLayout
+    <com.andrewreitz.onthisday.ui.musiclist.MusicListView
         android:id="@+id/content_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -38,9 +38,6 @@ dependencies {
   debugCompile 'com.jakewharton.madge:madge:1.1.1'
   debugCompile 'com.jakewharton.scalpel:scalpel:1.1.2'
 
-  compile 'com.squareup.mortar:mortar:0.16'
-  compile 'com.squareup.flow:flow:0.8'
-
   compile 'com.squareup.retrofit:retrofit:1.6.1'
 
   compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'
