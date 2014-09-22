@@ -62,8 +62,8 @@ dependencies {
 
   compile 'com.google.guava:guava:18.0'
 
-  compile 'com.andrewreitz:shillelagh:0.2.1-SNAPSHOT'
-  provided 'com.andrewreitz:shillelagh-processor:0.2.1-SNAPSHOT'
+  compile 'com.andrewreitz:shillelagh:0.3.0'
+  provided 'com.andrewreitz:shillelagh-processor:0.3.0'
 }
 
 def gitSha = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
