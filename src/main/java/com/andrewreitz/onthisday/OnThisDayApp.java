@@ -12,6 +12,8 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import dagger.ObjectGraph;
 import hugo.weaving.DebugLog;
+import mortar.Mortar;
+import mortar.MortarScope;
 import timber.log.Timber;
 
 public class OnThisDayApp extends Application {
@@ -20,6 +22,7 @@ public class OnThisDayApp extends Application {
   @Inject OnThisDayInitializer initializer;
 
   private ObjectGraph objectGraph;
+  private MortarScope rootScope;
 
   @Override
   public void onCreate() {
@@ -27,6 +30,8 @@ public class OnThisDayApp extends Application {
     buildObjectGraphAndInject();
     registerActivityLifecycleCallbacks(activityHierarchyServer);
     initializer.init();
+
+    rootScope = Mortar.createRootScope(BuildConfig.DEBUG, objectGraph);
   }
 
   @DebugLog
@@ -35,12 +40,8 @@ public class OnThisDayApp extends Application {
     objectGraph.inject(this);
   }
 
-  public ObjectGraph getObjectGraph() {
-    return objectGraph;
-  }
-
-  public void inject(Object o) {
-    objectGraph.inject(o);
+  public MortarScope getRootScope() {
+    return rootScope;
   }
 
   public static OnThisDayApp get(Context context) {
