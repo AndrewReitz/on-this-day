@@ -7,8 +7,8 @@ import retrofit.http.Query;
 import rx.Observable;
 
 public interface RedditService {
-  @GET("/r/gratefuldead.json") Observable<Reddit> getPosts();
+  @GET("/r/gratefuldead/search.json?q=On+this+day%3A&restrict_sr=on&sort=new&t=all") Observable<Reddit> getPosts();
 
-  @GET("/r/gratefuldead.json") Observable<Reddit> getPosts(@Query("after") String fullName,
+  @GET("r/gratefuldead/search.json?q=On+this+day%3A&restrict_sr=on&sort=new&t=all") Observable<Reddit> getPosts(@Query("after") String fullName,
                                                            @Query("count") int count);
 }

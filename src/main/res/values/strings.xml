@@ -8,11 +8,6 @@
     <string name="home">Home</string>
     <string name="starred">Starred</string>
     <string name="drawer_intro_text">Navigate to different areas of the app here!</string>
-    <string name="title_activity_test">TestActivity</string>
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
-    <string name="action_example">Example action</string>
     <string name="action_settings">Settings</string>
 
 </resources>

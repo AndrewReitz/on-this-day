@@ -33,7 +33,7 @@ public class MusicListAdapter extends BindableAdapter<Data> {
   }
 
   @Override public long getItemId(int position) {
-    return 0;
+    return position;
   }
 
   @Override public View newView(LayoutInflater inflater, int position, ViewGroup container) {
