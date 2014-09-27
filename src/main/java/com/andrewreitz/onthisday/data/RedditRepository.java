@@ -30,8 +30,7 @@ public class RedditRepository {
         .flatMap(listing -> Observable.from(listing.getChildren()))
         .map(Child::getData)
         .filter(data -> data.getDomain().equals(EXPECTED_DOMAIN))
-        .filter(data -> EXPECTED_DATE_PATTERN.matcher(data.getTitle()).find())
-        .cache();
+        .filter(data -> EXPECTED_DATE_PATTERN.matcher(data.getTitle()).find());
   }
 
   public Observable<Data> loadReddit(String name, int count) {
@@ -40,7 +39,6 @@ public class RedditRepository {
         .flatMap(listing -> Observable.from(listing.getChildren()))
         .map(Child::getData)
         .filter(data -> data.getDomain().equals(EXPECTED_DOMAIN))
-        .filter(data -> EXPECTED_DATE_PATTERN.matcher(data.getTitle()).find())
-        .cache();
+        .filter(data -> EXPECTED_DATE_PATTERN.matcher(data.getTitle()).find());
   }
 }
