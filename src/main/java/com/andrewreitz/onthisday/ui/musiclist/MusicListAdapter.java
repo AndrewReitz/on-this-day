@@ -9,27 +9,29 @@ import com.andrewreitz.onthisday.R;
 import com.andrewreitz.onthisday.data.api.model.Data;
 import com.andrewreitz.onthisday.ui.misc.BindableAdapter;
 
+import com.google.common.collect.Lists;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class MusicListAdapter extends BindableAdapter<Data> {
-  private List<Data> data = Collections.emptyList();
+  private List<Data> shows = Lists.newArrayList();
 
   public MusicListAdapter(Context context) {
     super(context);
   }
 
-  public void updateData(List<Data> data) {
-    this.data = data;
+  public void add(List<Data> shows) {
+    this.shows.addAll(shows);
     notifyDataSetChanged();
   }
 
   @Override public int getCount() {
-    return data.size();
+    return shows.size();
   }
 
   @Override public Data getItem(int position) {
-    return data.get(position);
+    return shows.get(position);
   }
 
   @Override public long getItemId(int position) {

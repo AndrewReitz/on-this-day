@@ -3,6 +3,7 @@ package com.andrewreitz.onthisday.data.api.model;
 import com.google.gson.annotations.SerializedName;
 
 public final class Data {
+  private final String domain;
   private final String selftext;
   private final String id;
   private final String thumbnail;
@@ -18,8 +19,9 @@ public final class Data {
   @SerializedName("created_utc")
   private final float createdUtc;
 
-  public Data(String selftext, String id, String thumbnail, String permalink, String name,
+  private Data(String domain, String selftext, String id, String thumbnail, String permalink, String name,
               float created, String url, String title, int numComments, float createdUtc) {
+    this.domain = domain;
     this.selftext = selftext;
     this.id = id;
     this.thumbnail = thumbnail;
@@ -30,6 +32,10 @@ public final class Data {
     this.title = title;
     this.numComments = numComments;
     this.createdUtc = createdUtc;
+  }
+
+  public String getDomain() {
+    return domain;
   }
 
   public String getSelftext() {

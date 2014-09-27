@@ -2,32 +2,24 @@ package com.andrewreitz.onthisday.ui.musiclist;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.FrameLayout;
 import android.widget.ListView;
-
-import com.andrewreitz.onthisday.R;
-import com.andrewreitz.onthisday.data.RedditRepository;
-import com.andrewreitz.onthisday.data.api.model.Data;
-import com.andrewreitz.onthisday.ui.misc.BetterViewAnimator;
-
-import java.util.List;
-
-import javax.inject.Inject;
-
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import com.andrewreitz.onthisday.R;
+import com.andrewreitz.onthisday.data.api.model.Data;
+import com.andrewreitz.onthisday.ui.misc.BetterViewAnimator;
+import com.andrewreitz.onthisday.ui.misc.InfiniteScrollListener;
+import java.util.List;
+import javax.inject.Inject;
 import mortar.Mortar;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
+import rx.functions.Action2;
+
+import static com.andrewreitz.onthisday.ui.musiclist.MusicList.Presenter;
 
 public class MusicListView extends BetterViewAnimator {
-  @Inject RedditRepository redditRepository;
+  @Inject Presenter presenter;
 
   @InjectView(R.id.music_list) ListView musicListView;
-
-  private Subscription request;
 
   private final MusicListAdapter adapter;
 
@@ -41,25 +33,30 @@ public class MusicListView extends BetterViewAnimator {
   @Override protected void onFinishInflate() {
     super.onFinishInflate();
     ButterKnife.inject(this);
-
+    presenter.takeView(this);
     musicListView.setAdapter(adapter);
   }
 
-  @Override protected void onAttachedToWindow() {
-    super.onAttachedToWindow();
-
-    request = redditRepository.loadReddit()
-        .toList()
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(data -> {
-          adapter.updateData(data);
-          setDisplayedChildId(R.id.music_list);
-        });
+  @Override protected void onDetachedFromWindow() {
+    super.onDetachedFromWindow();
+    presenter.dropView(this);
   }
 
-  @Override protected void onDetachedFromWindow() {
-    request.unsubscribe();
-    super.onDetachedFromWindow();
+  public MusicListAdapter getShows() {
+    return adapter;
+  }
+
+  /** Set a listener that will continually populate the shows list */
+  public void setLoadMoreListener(final Action2<String, Integer> loadMoreListener) {
+    musicListView.setOnScrollListener(new InfiniteScrollListener(25) {
+      @Override public void loadMore(int page, int totalItemsCount) {
+        final Data item = adapter.getItem(totalItemsCount - 1);
+        loadMoreListener.call(item.getName(), page);
+      }
+    });
+  }
+
+  public void hideSpinner() {
+    setDisplayedChildId(R.id.music_list);
   }
 }
