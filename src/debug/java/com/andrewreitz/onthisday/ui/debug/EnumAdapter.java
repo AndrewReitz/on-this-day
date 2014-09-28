@@ -6,9 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.andrewreitz.onthisday.ui.misc.BindableAdapter;
-
 import butterknife.ButterKnife;
+import com.andrewreitz.velcro.bindableadapter.BindableAdapter;
 
 class EnumAdapter<T extends Enum<T>> extends BindableAdapter<T> {
   private final T[] enumConstants;

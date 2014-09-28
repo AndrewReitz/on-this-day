@@ -5,8 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import com.andrewreitz.onthisday.ui.misc.BindableAdapter;
+import com.andrewreitz.velcro.bindableadapter.BindableAdapter;
 
 import static butterknife.ButterKnife.findById;
 

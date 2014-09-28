@@ -4,14 +4,10 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.andrewreitz.onthisday.R;
 import com.andrewreitz.onthisday.data.api.model.Data;
-import com.andrewreitz.onthisday.ui.misc.BindableAdapter;
-
+import com.andrewreitz.velcro.bindableadapter.BindableAdapter;
 import com.google.common.collect.Lists;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class MusicListAdapter extends BindableAdapter<Data> {
