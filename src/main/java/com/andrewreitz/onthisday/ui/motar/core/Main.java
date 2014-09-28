@@ -6,7 +6,7 @@ import com.andrewreitz.onthisday.ui.flow.IsMain;
 import com.andrewreitz.onthisday.ui.motar.android.ActionBarModule;
 import com.andrewreitz.onthisday.ui.motar.android.ActionBarOwner;
 import com.andrewreitz.onthisday.ui.motar.util.FlowOwner;
-import com.andrewreitz.onthisday.ui.musiclist.MusicList;
+import com.andrewreitz.onthisday.ui.screen.ShowsScreen;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -61,7 +61,7 @@ public class Main implements Blueprint {
     }
 
     @Override protected Blueprint getFirstScreen() {
-      return new MusicList();
+      return new ShowsScreen();
     }
   }
 }

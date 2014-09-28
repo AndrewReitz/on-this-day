@@ -1,4 +1,4 @@
-package com.andrewreitz.onthisday.ui.musiclist;
+package com.andrewreitz.onthisday.ui.screen;
 
 import android.os.Bundle;
 
@@ -9,6 +9,7 @@ import com.andrewreitz.onthisday.ui.flow.IsMain;
 import com.andrewreitz.onthisday.ui.motar.core.Main;
 import com.andrewreitz.onthisday.ui.motar.core.MainScope;
 
+import com.andrewreitz.onthisday.ui.show.ShowListView;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -21,8 +22,8 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.Subscriptions;
 
-@Layout(R.layout.view_music_list)
-public class MusicList implements Blueprint, IsMain {
+@Layout(R.layout.view_show_list)
+public class ShowsScreen implements Blueprint, IsMain {
   @Override public String getMortarScopeName() {
     return getClass().getName();
   }
@@ -32,7 +33,7 @@ public class MusicList implements Blueprint, IsMain {
   }
 
   @dagger.Module(
-      injects = MusicListView.class,
+      injects = ShowListView.class,
       addsTo = Main.Module.class,
       complete = false
   )
@@ -40,7 +41,7 @@ public class MusicList implements Blueprint, IsMain {
   }
 
   @Singleton
-  public static class Presenter extends ViewPresenter<MusicListView> {
+  public static class Presenter extends ViewPresenter<ShowListView> {
     private final Flow flow;
     private final RedditRepository redditRepository;
 
@@ -53,7 +54,7 @@ public class MusicList implements Blueprint, IsMain {
 
     @Override public void onLoad(Bundle savedInstanceState) {
       super.onLoad(savedInstanceState);
-      final MusicListView view = getView();
+      final ShowListView view = getView();
 
       request = redditRepository.loadReddit()
           .toList()
@@ -73,7 +74,7 @@ public class MusicList implements Blueprint, IsMain {
     }
 
     public void onShowSelected(Data show) {
-
+      //flow.goTo();
     }
 
     public void visibilityChanged(boolean visible) {

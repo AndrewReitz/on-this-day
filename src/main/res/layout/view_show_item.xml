@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.andrewreitz.onthisday.ui.musiclist.MusicItemView
+<com.andrewreitz.onthisday.ui.show.ShowItemView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -11,4 +11,4 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-</com.andrewreitz.onthisday.ui.musiclist.MusicItemView>
+</com.andrewreitz.onthisday.ui.show.ShowItemView>

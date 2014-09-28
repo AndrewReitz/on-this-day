@@ -1,4 +1,4 @@
-package com.andrewreitz.onthisday.ui.musiclist;
+package com.andrewreitz.onthisday.ui.show;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -11,11 +11,11 @@ import com.andrewreitz.onthisday.data.api.model.Data;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class MusicItemView extends RelativeLayout {
+public class ShowItemView extends RelativeLayout {
 
   @InjectView(R.id.music_item_text) TextView textView;
 
-  public MusicItemView(Context context, AttributeSet attrs) {
+  public ShowItemView(Context context, AttributeSet attrs) {
     super(context, attrs);
   }
 

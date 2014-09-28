@@ -1,4 +1,4 @@
-package com.andrewreitz.onthisday.ui.musiclist;
+package com.andrewreitz.onthisday.ui.show;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,10 +10,10 @@ import com.andrewreitz.velcro.bindableadapter.BindableAdapter;
 import com.google.common.collect.Lists;
 import java.util.List;
 
-public class MusicListAdapter extends BindableAdapter<Data> {
+public class ShowListAdapter extends BindableAdapter<Data> {
   private List<Data> shows = Lists.newArrayList();
 
-  public MusicListAdapter(Context context) {
+  public ShowListAdapter(Context context) {
     super(context);
   }
 
@@ -35,10 +35,10 @@ public class MusicListAdapter extends BindableAdapter<Data> {
   }
 
   @Override public View newView(LayoutInflater inflater, int position, ViewGroup container) {
-    return inflater.inflate(R.layout.view_music_item, container, false);
+    return inflater.inflate(R.layout.view_show_item, container, false);
   }
 
   @Override public void bindView(Data item, int position, View view) {
-    ((MusicItemView) view).bindTo(item);
+    ((ShowItemView) view).bindTo(item);
   }
 }

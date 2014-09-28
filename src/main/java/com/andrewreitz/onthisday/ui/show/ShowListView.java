@@ -1,10 +1,11 @@
-package com.andrewreitz.onthisday.ui.musiclist;
+package com.andrewreitz.onthisday.ui.show;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.ListView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnItemClick;
 import com.andrewreitz.onthisday.R;
 import com.andrewreitz.onthisday.data.api.model.Data;
 import com.andrewreitz.velcro.betterviewanimator.BetterViewAnimator;
@@ -13,20 +14,20 @@ import javax.inject.Inject;
 import mortar.Mortar;
 import rx.functions.Action2;
 
-import static com.andrewreitz.onthisday.ui.musiclist.MusicList.Presenter;
+import static com.andrewreitz.onthisday.ui.screen.ShowsScreen.Presenter;
 
-public class MusicListView extends BetterViewAnimator {
+public class ShowListView extends BetterViewAnimator {
   @Inject Presenter presenter;
 
   @InjectView(R.id.music_list) ListView musicListView;
 
-  private final MusicListAdapter adapter;
+  private final ShowListAdapter adapter;
 
-  public MusicListView(Context context, AttributeSet attrs) {
+  public ShowListView(Context context, AttributeSet attrs) {
     super(context, attrs);
     Mortar.inject(context, this);
 
-    adapter = new MusicListAdapter(context);
+    adapter = new ShowListAdapter(context);
   }
 
   @Override protected void onFinishInflate() {
@@ -41,7 +42,11 @@ public class MusicListView extends BetterViewAnimator {
     presenter.dropView(this);
   }
 
-  public MusicListAdapter getShows() {
+  @OnItemClick(R.id.music_list) void onShowClicked(int position) {
+    presenter.onShowSelected(adapter.getItem(position));
+  }
+
+  public ShowListAdapter getShows() {
     return adapter;
   }
 
