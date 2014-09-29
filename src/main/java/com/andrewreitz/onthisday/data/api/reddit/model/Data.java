@@ -1,4 +1,4 @@
-package com.andrewreitz.onthisday.data.api.model;
+package com.andrewreitz.onthisday.data.api.reddit.model;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -19,8 +19,8 @@ public final class Data {
   @SerializedName("created_utc")
   private final float createdUtc;
 
-  private Data(String domain, String selftext, String id, String thumbnail, String permalink, String name,
-              float created, String url, String title, int numComments, float createdUtc) {
+  private Data(String domain, String selftext, String id, String thumbnail, String permalink,
+      String name, float created, String url, String title, int numComments, float createdUtc) {
     this.domain = domain;
     this.selftext = selftext;
     this.id = id;
@@ -76,5 +76,21 @@ public final class Data {
 
   public float getCreatedUtc() {
     return createdUtc;
+  }
+
+  @Override public String toString() {
+    return "Data{" //
+        + "domain='" + domain + '\'' //
+        + ", selftext='" + selftext + '\'' //
+        + ", id='" + id + '\'' //
+        + ", thumbnail='" + thumbnail + '\'' //
+        + ", permalink='" + permalink + '\'' //
+        + ", name='" + name + '\'' //
+        + ", created=" + created //
+        + ", url='" + url + '\'' //
+        + ", title='" + title + '\'' //
+        + ", numComments=" + numComments //
+        + ", createdUtc=" + createdUtc //
+        + '}';
   }
 }

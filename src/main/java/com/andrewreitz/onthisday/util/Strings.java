@@ -1,5 +1,8 @@
 package com.andrewreitz.onthisday.util;
 
+import java.util.Iterator;
+import java.util.List;
+
 /** From https://github.com/JakeWharton/u2020 */
 public final class Strings {
   private Strings() {
@@ -32,5 +35,19 @@ public final class Strings {
     } else {
       return Character.toUpperCase(first) + string.substring(1);
     }
+  }
+
+  public static <T> String join(List<T> list) {
+    StringBuilder sb = new StringBuilder();
+    final Iterator<T> iterator = list.iterator();
+
+    while (iterator.hasNext()) {
+      sb.append(iterator.next().toString());
+      if (iterator.hasNext()) {
+        sb.append(", ");
+      }
+    }
+
+    return sb.toString();
   }
 }

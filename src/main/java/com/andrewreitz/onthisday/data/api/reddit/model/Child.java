@@ -1,4 +1,4 @@
-package com.andrewreitz.onthisday.data.api.model;
+package com.andrewreitz.onthisday.data.api.reddit.model;
 
 public final class Child {
   private final String kind;

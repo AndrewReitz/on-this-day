@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import com.andrewreitz.onthisday.R;
 import com.andrewreitz.onthisday.data.RedditRepository;
-import com.andrewreitz.onthisday.data.api.model.Data;
+import com.andrewreitz.onthisday.data.api.reddit.model.Data;
 import com.andrewreitz.onthisday.ui.flow.IsMain;
 import com.andrewreitz.onthisday.ui.motar.core.Main;
 import com.andrewreitz.onthisday.ui.motar.core.MainScope;
@@ -36,8 +36,7 @@ public class ShowsScreen implements Blueprint, IsMain {
       injects = ShowListView.class,
       addsTo = Main.Module.class,
       complete = false
-  )
-  static class Module {
+  ) class Module {
   }
 
   @Singleton
@@ -74,7 +73,7 @@ public class ShowsScreen implements Blueprint, IsMain {
     }
 
     public void onShowSelected(Data show) {
-      //flow.goTo();
+      flow.goTo(new ShowDetailScreen(show));
     }
 
     public void visibilityChanged(boolean visible) {

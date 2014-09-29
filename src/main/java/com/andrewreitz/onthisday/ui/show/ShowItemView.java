@@ -6,7 +6,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.andrewreitz.onthisday.R;
-import com.andrewreitz.onthisday.data.api.model.Data;
+import com.andrewreitz.onthisday.data.api.reddit.model.Data;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -24,7 +24,7 @@ public class ShowItemView extends RelativeLayout {
     ButterKnife.inject(this);
   }
 
-  public void bindTo(Data data) {
-    textView.setText(data.getTitle());
+  public void bindTo(Data show) {
+    textView.setText(show.getTitle());
   }
 }

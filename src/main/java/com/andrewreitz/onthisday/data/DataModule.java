@@ -4,7 +4,8 @@ import android.app.Application;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import com.andrewreitz.onthisday.data.api.RedditService;
+import com.andrewreitz.onthisday.data.api.archive.ArchiveService;
+import com.andrewreitz.onthisday.data.api.reddit.RedditService;
 import com.inkapplications.preferences.BooleanPreference;
 
 import javax.inject.Singleton;
@@ -27,14 +28,25 @@ public final class DataModule {
     return new BooleanPreference(sharedPreferences, "seen_nav_drawer", false);
   }
 
-  @Provides @Singleton RestAdapter provideRestAdapter() {
-    return new RestAdapter.Builder()
-        .setLogLevel(RestAdapter.LogLevel.FULL) // todo
-        .setEndpoint("http://reddit.com")
+  @Provides @Singleton @Reddit RestAdapter provideRedditRestAdapter() {
+    return new RestAdapter.Builder() //
+        .setLogLevel(RestAdapter.LogLevel.FULL) // TOOD
+        .setEndpoint("http://reddit.com") //
         .build();
   }
 
-  @Provides @Singleton RedditService provideRedditService(RestAdapter restAdapter) {
+  @Provides @Singleton RedditService provideRedditService(@Reddit RestAdapter restAdapter) {
     return restAdapter.create(RedditService.class);
+  }
+
+  @Provides @Singleton @Archive RestAdapter provideArchiveRestAdapter() {
+    return new RestAdapter.Builder() //
+        .setLogLevel(RestAdapter.LogLevel.FULL) // TOOD
+        .setEndpoint("https://archive.org") //
+        .build();
+  }
+
+  @Provides @Singleton ArchiveService provideArchiveService(@Archive RestAdapter restAdapter) {
+    return restAdapter.create(ArchiveService.class);
   }
 }

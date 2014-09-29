@@ -53,7 +53,6 @@ public class Main implements Blueprint {
       } else {
         boolean hasUp = newScreen instanceof HasParent;
         String title = newScreen.getClass().getSimpleName();
-        //ActionBarOwner.MenuAction menu = hasUp ? null : new ActionBarOwner.MenuAction("Friends", () -> { });
         actionBarOwner.setConfig(new ActionBarOwner.Config(false, hasUp, title, null));
       }
 

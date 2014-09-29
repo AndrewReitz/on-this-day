@@ -7,7 +7,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnItemClick;
 import com.andrewreitz.onthisday.R;
-import com.andrewreitz.onthisday.data.api.model.Data;
+import com.andrewreitz.onthisday.data.api.reddit.model.Data;
 import com.andrewreitz.velcro.betterviewanimator.BetterViewAnimator;
 import com.andrewreitz.velcro.infinitescroll.InfiniteScrollListener;
 import javax.inject.Inject;

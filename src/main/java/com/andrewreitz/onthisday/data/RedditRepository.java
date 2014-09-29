@@ -1,9 +1,9 @@
 package com.andrewreitz.onthisday.data;
 
-import com.andrewreitz.onthisday.data.api.RedditService;
-import com.andrewreitz.onthisday.data.api.model.Child;
-import com.andrewreitz.onthisday.data.api.model.Data;
-import com.andrewreitz.onthisday.data.api.model.Reddit;
+import com.andrewreitz.onthisday.data.api.reddit.RedditService;
+import com.andrewreitz.onthisday.data.api.reddit.model.Child;
+import com.andrewreitz.onthisday.data.api.reddit.model.Data;
+import com.andrewreitz.onthisday.data.api.reddit.model.Reddit;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
 import javax.inject.Singleton;

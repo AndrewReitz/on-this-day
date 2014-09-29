@@ -1,6 +1,6 @@
-package com.andrewreitz.onthisday.data.api;
+package com.andrewreitz.onthisday.data.api.reddit;
 
-import com.andrewreitz.onthisday.data.api.model.Reddit;
+import com.andrewreitz.onthisday.data.api.reddit.model.Reddit;
 
 import retrofit.http.GET;
 import retrofit.http.Query;

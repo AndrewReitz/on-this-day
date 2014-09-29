@@ -1,9 +1,6 @@
 
-package com.andrewreitz.onthisday.data.api.model;
+package com.andrewreitz.onthisday.data.api.reddit.model;
 
-import org.joda.time.DateTime;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public final class Listing {
