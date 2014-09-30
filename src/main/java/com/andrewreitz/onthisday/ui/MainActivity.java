@@ -36,7 +36,6 @@ import mortar.Mortar;
 import mortar.MortarActivityScope;
 import mortar.MortarScope;
 
-import static android.support.v4.widget.DrawerLayout.LOCK_MODE_LOCKED_CLOSED;
 import static android.view.MenuItem.SHOW_AS_ACTION_ALWAYS;
 import static android.widget.Toast.LENGTH_LONG;
 import static butterknife.ButterKnife.findById;
@@ -159,6 +158,36 @@ public final class MainActivity extends Activity implements ActionBarOwner.View 
     return super.getSystemService(name);
   }
 
+  @Override public void setShowHomeEnabled(boolean enabled) {
+    ActionBar actionBar = getActionBar();
+    //noinspection ConstantConditions
+    actionBar.setDisplayShowHomeEnabled(enabled);
+  }
+
+  @Override public void setUpButtonEnabled(boolean enabled) {
+    ActionBar actionBar = getActionBar();
+    //noinspection ConstantConditions
+    actionBar.setDisplayHomeAsUpEnabled(enabled);
+    actionBar.setHomeButtonEnabled(enabled);
+  }
+
+  @Override public void setMenu(ActionBarOwner.MenuAction action) {
+    if (action != actionBarMenuAction) {
+      actionBarMenuAction = action;
+      invalidateOptionsMenu();
+    }
+  }
+
+  @Override public void setNavDrawerEnabled(boolean enabled) {
+    if (drawerToggle != null) {
+      drawerToggle.setDrawerIndicatorEnabled(enabled);
+    }
+  }
+
+  @Override public Context getMortarContext() {
+    return this;
+  }
+
   private void setupNavigationDrawer() {
     final ActionBar actionBar = getActionBar();
 
@@ -190,8 +219,6 @@ public final class MainActivity extends Activity implements ActionBarOwner.View 
     drawerLayout.setDrawerListener(drawerToggle);
     drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, Gravity.START);
 
-    drawerLayout.setDrawerLockMode(LOCK_MODE_LOCKED_CLOSED, Gravity.END);
-
     //noinspection ConstantConditions
     actionBar.setDisplayHomeAsUpEnabled(true);
     actionBar.setHomeButtonEnabled(true);
@@ -204,29 +231,5 @@ public final class MainActivity extends Activity implements ActionBarOwner.View 
       }, TimeUnit.MILLISECONDS.toMillis(500)); /* Half a second, but there's gotta be a better way*/
       seenNavDrawer.set(true);
     }
-  }
-
-  @Override public void setShowHomeEnabled(boolean enabled) {
-    ActionBar actionBar = getActionBar();
-    //noinspection ConstantConditions
-    actionBar.setDisplayShowHomeEnabled(false);
-  }
-
-  @Override public void setUpButtonEnabled(boolean enabled) {
-    ActionBar actionBar = getActionBar();
-    //noinspection ConstantConditions
-    actionBar.setDisplayHomeAsUpEnabled(enabled);
-    actionBar.setHomeButtonEnabled(enabled);
-  }
-
-  @Override public void setMenu(ActionBarOwner.MenuAction action) {
-    if (action != actionBarMenuAction) {
-      actionBarMenuAction = action;
-      invalidateOptionsMenu();
-    }
-  }
-
-  @Override public Context getMortarContext() {
-    return this;
   }
 }

@@ -34,25 +34,29 @@ public class ActionBarOwner extends Presenter<ActionBarOwner.View> {
 
     void setMenu(MenuAction action);
 
+    void setNavDrawerEnabled(boolean enabled);
+
     Context getMortarContext();
   }
 
   public static class Config {
     public final boolean showHomeEnabled;
     public final boolean upButtonEnabled;
+    public final boolean navDrawerEnabled;
     public final CharSequence title;
     public final MenuAction action;
 
-    public Config(boolean showHomeEnabled, boolean upButtonEnabled, CharSequence title,
-        MenuAction action) {
+    public Config(boolean showHomeEnabled, boolean upButtonEnabled, boolean navDrawerEnabled,
+        CharSequence title, MenuAction action) {
       this.showHomeEnabled = showHomeEnabled;
       this.upButtonEnabled = upButtonEnabled;
+      this.navDrawerEnabled = navDrawerEnabled;
       this.title = title;
       this.action = action;
     }
 
     public Config withAction(MenuAction action) {
-      return new Config(showHomeEnabled, upButtonEnabled, title, action);
+      return new Config(showHomeEnabled, upButtonEnabled, navDrawerEnabled, title, action);
     }
   }
 
@@ -94,6 +98,7 @@ public class ActionBarOwner extends Presenter<ActionBarOwner.View> {
 
     view.setShowHomeEnabled(config.showHomeEnabled);
     view.setUpButtonEnabled(config.upButtonEnabled);
+    view.setNavDrawerEnabled(config.navDrawerEnabled);
     view.setTitle(config.title);
     view.setMenu(config.action);
   }

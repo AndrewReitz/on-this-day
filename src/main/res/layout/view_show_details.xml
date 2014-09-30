@@ -11,36 +11,41 @@
       android:layout_height="wrap_content"
       android:layout_gravity="center"/>
 
-  <LinearLayout
-      android:id="@+id/show_details_content"
-      android:orientation="vertical"
-      android:layout_width="match_parent"
+  <ScrollView
+      android:id="@+id/show_details_scroll"
+      android:layout_width="wrap_content"
       android:layout_height="wrap_content">
-
-    <TextView
-        android:id="@+id/show_details_title"
+    <LinearLayout
+        android:id="@+id/show_details_content"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/show_details_date"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+      <TextView
+          android:id="@+id/show_details_title"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"/>
 
-    <TextView
-        android:id="@+id/show_details_venue"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+      <TextView
+          android:id="@+id/show_details_date"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"/>
 
-    <TextView
-        android:id="@+id/show_details_location"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+      <TextView
+          android:id="@+id/show_details_venue"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"/>
 
-    <View android:layout_height="2dp"
-        android:layout_width="fill_parent"
-        android:background="?android:attr/listDivider" />
+      <TextView
+          android:id="@+id/show_details_location"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"/>
 
-  </LinearLayout>
+      <View android:layout_height="2dp"
+          android:layout_width="fill_parent"
+          android:background="?android:attr/listDivider"/>
+
+    </LinearLayout>
+  </ScrollView>
 
 </com.andrewreitz.onthisday.ui.showdetails.ShowDetailsView>

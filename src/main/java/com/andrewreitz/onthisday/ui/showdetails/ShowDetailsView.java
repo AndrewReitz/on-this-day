@@ -57,6 +57,6 @@ public class ShowDetailsView extends BetterViewAnimator {
           content.addView(trackView);
         });
 
-    setDisplayedChildId(R.id.show_details_content);
+    setDisplayedChildId(R.id.show_details_scroll);
   }
 }

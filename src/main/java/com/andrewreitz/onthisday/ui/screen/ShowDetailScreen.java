@@ -7,6 +7,7 @@ import com.andrewreitz.onthisday.data.api.archive.ArchiveService;
 import com.andrewreitz.onthisday.data.api.archive.model.Archive;
 import com.andrewreitz.onthisday.data.api.reddit.model.Data;
 import com.andrewreitz.onthisday.ui.motar.core.Main;
+import com.andrewreitz.onthisday.ui.motar.core.MainScope;
 import com.andrewreitz.onthisday.ui.showdetails.ShowDetailsView;
 import dagger.Provides;
 import flow.Flow;
@@ -62,7 +63,7 @@ public class ShowDetailScreen implements HasParent<ShowsScreen>, Blueprint {
     private final ArchiveService archiveService;
     private final Data show;
 
-    @Inject public Presenter(Flow flow, ArchiveService archiveService, Data show) {
+    @Inject public Presenter(@MainScope Flow flow, ArchiveService archiveService, Data show) {
       this.flow = flow;
       this.archiveService = archiveService;
       this.show = show;

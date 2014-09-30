@@ -49,11 +49,11 @@ public class Main implements Blueprint {
 
     @Override public void showScreen(Blueprint newScreen, Flow.Direction direction) {
       if (newScreen instanceof IsMain) {
-        actionBarOwner.setConfig(new ActionBarOwner.Config(false, true, "On This day", null));
+        actionBarOwner.setConfig(new ActionBarOwner.Config(true, true, true, "On This day", null));
       } else {
         boolean hasUp = newScreen instanceof HasParent;
         String title = newScreen.getClass().getSimpleName();
-        actionBarOwner.setConfig(new ActionBarOwner.Config(false, hasUp, title, null));
+        actionBarOwner.setConfig(new ActionBarOwner.Config(true, hasUp, false, title, null));
       }
 
       super.showScreen(newScreen, direction);
