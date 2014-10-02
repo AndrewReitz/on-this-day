@@ -2,40 +2,64 @@ package com.andrewreitz.onthisday.data;
 
 import com.andrewreitz.onthisday.data.api.archive.ArchiveService;
 import com.andrewreitz.onthisday.data.api.archive.model.Archive;
+import com.andrewreitz.onthisday.data.rx.EndObserver;
 import com.google.common.collect.Maps;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import rx.Observer;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subjects.PublishSubject;
+import rx.subscriptions.Subscriptions;
 
 @Singleton
-public class ArchiveRepository extends Repository<String, Archive> {
-
-  // No fancy caches here
-  private static final Cache<String, Archive> cache = new Cache<String, Archive>() {
-    private final Map<String, Archive> cache = Maps.newLinkedHashMap();
-    public Archive put(String key, Archive value) {
-      return cache.put(key, value);
-    }
-
-    @Override public Archive get(String key) {
-      return cache.get(key);
-    }
-  };
-
+public class ArchiveRepository {
   private final ArchiveService archiveService;
 
   @Inject public ArchiveRepository(ArchiveService archiveService) {
-    super(cache);
     this.archiveService = archiveService;
   }
 
-  @Override protected void doNetworkRequest(String key, PublishSubject<Archive> publishSubject) {
-    archiveService.getShowData(key)
+  private final Map<String, Archive> cache = Maps.newLinkedHashMap();
+  private final Map<String, PublishSubject<Archive>> requests = Maps.newLinkedHashMap();
+
+  public Subscription loadShow(final String showUrl, Observer<Archive> observer) {
+    Archive item = cache.get(showUrl);
+    if (item != null) {
+      // We have a cached value. Emit it immediately.
+      observer.onNext(item);
+      // Don't do another network all.
+      return Subscriptions.empty();
+    }
+
+    PublishSubject<Archive> request = requests.get(showUrl);
+    if (request != null) {
+      // There's an in-flight network request for this section already. Join it.
+      return request.subscribe(observer);
+    }
+
+    request = PublishSubject.create();
+    requests.put(showUrl, request);
+
+    Subscription subscription = request.subscribe(observer);
+
+    request.subscribe(new EndObserver<Archive>() {
+      @Override public void onEnd() {
+        requests.remove(showUrl);
+      }
+
+      @Override public void onNext(Archive item) {
+        cache.put(showUrl, item);
+      }
+    });
+
+    archiveService.getShowData(showUrl)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(publishSubject);
+        .subscribe(request);
+
+    return subscription;
   }
 }
