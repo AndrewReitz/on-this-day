@@ -1,11 +1,14 @@
 package com.andrewreitz.onthisday.ui.screen;
 
+import android.app.Application;
+import android.content.Context;
 import android.os.Bundle;
 
 import com.andrewreitz.onthisday.R;
 import com.andrewreitz.onthisday.data.RedditRepository;
 import com.andrewreitz.onthisday.data.api.reddit.model.Data;
 import com.andrewreitz.onthisday.ui.flow.IsMain;
+import com.andrewreitz.onthisday.ui.motar.android.ActionBarOwner;
 import com.andrewreitz.onthisday.ui.motar.core.Main;
 import com.andrewreitz.onthisday.ui.motar.core.MainScope;
 
@@ -43,12 +46,20 @@ public class ShowsScreen implements Blueprint, IsMain {
   public static class Presenter extends ViewPresenter<ShowListView> {
     private final Flow flow;
     private final RedditRepository redditRepository;
+    private final Context context;
+    private final ActionBarOwner actionBarOwner;
 
     private Subscription request = Subscriptions.empty();
 
-    @Inject Presenter(@MainScope Flow flow, RedditRepository redditRepository) {
+    @Inject Presenter(Application context, ActionBarOwner actionBarOwner, @MainScope Flow flow, RedditRepository redditRepository) {
       this.flow = flow;
       this.redditRepository = redditRepository;
+      this.context = context;
+      this.actionBarOwner = actionBarOwner;
+
+      actionBarOwner.setConfig(
+          new ActionBarOwner.Config(true, true, true, context.getString(R.string.app_name),
+              null));
     }
 
     @Override public void onLoad(Bundle savedInstanceState) {
@@ -73,7 +84,7 @@ public class ShowsScreen implements Blueprint, IsMain {
     }
 
     public void onShowSelected(Data show) {
-      flow.goTo(new ShowDetailScreen(show));
+      flow.goTo(new ShowDetailScreen(context, actionBarOwner, show));
     }
 
     public void visibilityChanged(boolean visible) {

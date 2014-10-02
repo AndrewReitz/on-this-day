@@ -18,6 +18,13 @@ package com.andrewreitz.onthisday.ui.motar.android;
 import android.content.Context;
 import android.os.Bundle;
 
+import android.support.annotation.DrawableRes;
+import android.support.annotation.IdRes;
+import com.google.common.collect.Lists;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 import mortar.Mortar;
 import mortar.MortarScope;
 import mortar.Presenter;
@@ -32,7 +39,7 @@ public class ActionBarOwner extends Presenter<ActionBarOwner.View> {
 
     void setTitle(CharSequence title);
 
-    void setMenu(MenuAction action);
+    void setMenu(List<MenuAction> actions);
 
     void setNavDrawerEnabled(boolean enabled);
 
@@ -44,27 +51,30 @@ public class ActionBarOwner extends Presenter<ActionBarOwner.View> {
     public final boolean upButtonEnabled;
     public final boolean navDrawerEnabled;
     public final CharSequence title;
-    public final MenuAction action;
+    public final List<MenuAction> actions;
 
     public Config(boolean showHomeEnabled, boolean upButtonEnabled, boolean navDrawerEnabled,
-        CharSequence title, MenuAction action) {
+        CharSequence title, MenuAction... actions) {
       this.showHomeEnabled = showHomeEnabled;
       this.upButtonEnabled = upButtonEnabled;
       this.navDrawerEnabled = navDrawerEnabled;
       this.title = title;
-      this.action = action;
+      this.actions = actions == null ? Collections.emptyList() : Arrays.asList(actions);
     }
 
-    public Config withAction(MenuAction action) {
-      return new Config(showHomeEnabled, upButtonEnabled, navDrawerEnabled, title, action);
+    public Config withAction(MenuAction... actions) {
+      return new Config(showHomeEnabled, upButtonEnabled, navDrawerEnabled, title, actions);
     }
   }
 
   public static class MenuAction {
+    @DrawableRes public final int resIcon;
+
     public final CharSequence title;
     public final Action0 action;
 
-    public MenuAction(CharSequence title, Action0 action) {
+    public MenuAction(@DrawableRes int resIcon, CharSequence title, Action0 action) {
+      this.resIcon = resIcon;
       this.title = title;
       this.action = action;
     }
@@ -100,6 +110,6 @@ public class ActionBarOwner extends Presenter<ActionBarOwner.View> {
     view.setUpButtonEnabled(config.upButtonEnabled);
     view.setNavDrawerEnabled(config.navDrawerEnabled);
     view.setTitle(config.title);
-    view.setMenu(config.action);
+    view.setMenu(config.actions);
   }
 }

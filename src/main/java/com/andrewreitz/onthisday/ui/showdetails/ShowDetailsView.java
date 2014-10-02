@@ -22,8 +22,7 @@ public class ShowDetailsView extends BetterViewAnimator {
   @InjectView(R.id.show_details_content) ViewGroup content;
   @InjectView(R.id.show_details_title) TextView title;
   @InjectView(R.id.show_details_date) TextView date;
-  @InjectView(R.id.show_details_venue) TextView venue;
-  @InjectView(R.id.show_details_location) TextView location;
+  @InjectView(R.id.show_details_venue_and_location) TextView venueAndLocation;
 
   public ShowDetailsView(Context context, AttributeSet attrs) {
     super(context, attrs);
@@ -45,8 +44,8 @@ public class ShowDetailsView extends BetterViewAnimator {
     final Metadata metadata = show.getMetadata();
     title.setText(Strings.join(metadata.getTitle()));
     date.setText(Strings.join(metadata.getDate()));
-    venue.setText(Strings.join(metadata.getVenue()));
-    location.setText(Strings.join(metadata.getCoverage()));
+    venueAndLocation.setText(String.format("%s, %s", Strings.join(metadata.getVenue()),
+        Strings.join(metadata.getCoverage())));
 
     show.getFileData()
         .filter(fileData -> "original".equals(fileData.getSource()))

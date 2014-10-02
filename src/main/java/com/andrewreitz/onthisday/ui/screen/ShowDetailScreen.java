@@ -1,13 +1,15 @@
 package com.andrewreitz.onthisday.ui.screen;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.widget.Toast;
 import com.andrewreitz.onthisday.R;
 import com.andrewreitz.onthisday.data.ArchiveRepository;
-import com.andrewreitz.onthisday.data.api.archive.ArchiveService;
 import com.andrewreitz.onthisday.data.api.archive.model.Archive;
 import com.andrewreitz.onthisday.data.api.reddit.model.Data;
 import com.andrewreitz.onthisday.data.rx.EndlessObserver;
+import com.andrewreitz.onthisday.ui.motar.android.ActionBarOwner;
 import com.andrewreitz.onthisday.ui.motar.core.Main;
 import com.andrewreitz.onthisday.ui.motar.core.MainScope;
 import com.andrewreitz.onthisday.ui.showdetails.ShowDetailsView;
@@ -19,16 +21,22 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import mortar.Blueprint;
 import mortar.ViewPresenter;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
 
 @Layout(R.layout.view_show_details)
 public class ShowDetailScreen implements HasParent<ShowsScreen>, Blueprint {
   private final Data show;
 
-  public ShowDetailScreen(@NonNull Data show) {
+  public ShowDetailScreen(Context context, ActionBarOwner actionBarOwner, @NonNull Data show) {
     this.show = show;
+
+    actionBarOwner.setConfig(
+        new ActionBarOwner.Config(true, true, false, context.getString(R.string.app_name),
+            new ActionBarOwner.MenuAction(R.drawable.ic_favorite,
+                context.getString(R.string.favorite_show),
+                () -> Toast.makeText(context, "Test", Toast.LENGTH_LONG).show()),
+            new ActionBarOwner.MenuAction(R.drawable.ic_play,
+                context.getString(R.string.play_show) ,
+                () -> Toast.makeText(context, "Test", Toast.LENGTH_LONG).show())));
   }
 
   @Override public String getMortarScopeName() {
@@ -75,7 +83,7 @@ public class ShowDetailScreen implements HasParent<ShowsScreen>, Blueprint {
       super.onLoad(savedInstanceState);
 
       final String showUrl = show.getUrl().replace("https://archive.org/", "");
-      archiveRepository.load(showUrl, new EndlessObserver<Archive>() {
+      archiveRepository.loadShow(showUrl, new EndlessObserver<Archive>() {
         @Override public void onNext(Archive archive) {
           getView().bindTo(archive);
         }

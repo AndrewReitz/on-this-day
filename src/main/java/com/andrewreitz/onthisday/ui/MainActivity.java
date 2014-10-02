@@ -24,6 +24,7 @@ import com.andrewreitz.onthisday.ui.motar.core.Main;
 import com.andrewreitz.onthisday.ui.motar.core.MainView;
 import com.inkapplications.preferences.BooleanPreference;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
@@ -39,6 +40,7 @@ import mortar.MortarScope;
 import static android.view.MenuItem.SHOW_AS_ACTION_ALWAYS;
 import static android.widget.Toast.LENGTH_LONG;
 import static butterknife.ButterKnife.findById;
+import static com.andrewreitz.onthisday.ui.motar.android.ActionBarOwner.MenuAction;
 
 public final class MainActivity extends Activity implements ActionBarOwner.View {
 
@@ -52,7 +54,7 @@ public final class MainActivity extends Activity implements ActionBarOwner.View 
   private ActionBarDrawerToggle drawerToggle;
   private MortarActivityScope activityScope;
   private Flow mainFlow;
-  private ActionBarOwner.MenuAction actionBarMenuAction;
+  private List<MenuAction> actionBarMenuAction;
 
   @OnClick(R.id.nav_drawer_home) void navigateHome() {
 
@@ -112,12 +114,15 @@ public final class MainActivity extends Activity implements ActionBarOwner.View 
   /** Configure the action bar menu as required by {@link ActionBarOwner.View}. */
   @Override public boolean onCreateOptionsMenu(Menu menu) {
     if (actionBarMenuAction != null) {
-      menu.add(actionBarMenuAction.title)
-          .setShowAsActionFlags(SHOW_AS_ACTION_ALWAYS)
-          .setOnMenuItemClickListener(menuItem -> {
-            actionBarMenuAction.action.call();
-            return true;
-          });
+      for (MenuAction menuAction : actionBarMenuAction) {
+        menu.add(menuAction.title)
+            .setIcon(menuAction.resIcon)
+            .setShowAsActionFlags(SHOW_AS_ACTION_ALWAYS)
+            .setOnMenuItemClickListener(menuItem -> {
+              menuAction.action.call();
+              return true;
+            });
+      }
     }
     return true;
   }
@@ -171,9 +176,9 @@ public final class MainActivity extends Activity implements ActionBarOwner.View 
     actionBar.setHomeButtonEnabled(enabled);
   }
 
-  @Override public void setMenu(ActionBarOwner.MenuAction action) {
-    if (action != actionBarMenuAction) {
-      actionBarMenuAction = action;
+  @Override public void setMenu(List<MenuAction> actions) {
+    if (actions != actionBarMenuAction) {
+      actionBarMenuAction = actions;
       invalidateOptionsMenu();
     }
   }
