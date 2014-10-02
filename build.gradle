@@ -55,8 +55,8 @@ dependencies {
   compile 'com.github.frankiesardo:icepick:2.3.6'
   provided 'com.github.frankiesardo:icepick-processor:2.3.6'
 
-  compile 'com.netflix.rxjava:rxjava-core:0.20.3'
-  compile 'com.netflix.rxjava:rxjava-android:0.20.3'
+  compile 'com.netflix.rxjava:rxjava-core:0.20.4'
+  compile 'com.netflix.rxjava:rxjava-android:0.20.4'
 
   compile 'joda-time:joda-time:2.4'
 
