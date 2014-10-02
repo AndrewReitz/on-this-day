@@ -5,8 +5,6 @@ import com.andrewreitz.onthisday.data.api.archive.model.Archive;
 import com.andrewreitz.onthisday.data.rx.EndObserver;
 import com.google.common.collect.Maps;
 import java.util.Map;
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -14,18 +12,17 @@ import rx.schedulers.Schedulers;
 import rx.subjects.PublishSubject;
 import rx.subscriptions.Subscriptions;
 
-@Singleton
 public class ArchiveRepository {
   private final ArchiveService archiveService;
-
-  @Inject public ArchiveRepository(ArchiveService archiveService) {
-    this.archiveService = archiveService;
-  }
 
   private final Map<String, Archive> cache = Maps.newLinkedHashMap();
   private final Map<String, PublishSubject<Archive>> requests = Maps.newLinkedHashMap();
 
-  public Subscription loadShow(final String showUrl, Observer<Archive> observer) {
+  public ArchiveRepository(ArchiveService archiveService) {
+    this.archiveService = archiveService;
+  }
+
+  public Subscription loadShow(final String showUrl, final Observer<Archive> observer) {
     Archive item = cache.get(showUrl);
     if (item != null) {
       // We have a cached value. Emit it immediately.

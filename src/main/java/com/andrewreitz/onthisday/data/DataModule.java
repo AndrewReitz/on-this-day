@@ -49,4 +49,8 @@ public final class DataModule {
   @Provides @Singleton ArchiveService provideArchiveService(@Archive RestAdapter restAdapter) {
     return restAdapter.create(ArchiveService.class);
   }
+
+  @Provides @Singleton ArchiveRepository provideArchiveRepository(ArchiveService archiveService) {
+    return new ArchiveRepository(archiveService);
+  }
 }
