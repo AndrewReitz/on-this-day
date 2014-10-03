@@ -68,6 +68,7 @@ dependencies {
   compile 'com.andrewreitz.velcro:velcro-infinitescroll:+'
   compile 'com.andrewreitz.velcro:velcro-betterviewanimator:+'
   compile 'com.andrewreitz.velcro:velcro-bindableadapter:+'
+  compile 'com.andrewreitz.velcro:velcro-rx:+'
 }
 
 def gitSha = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
@@ -75,7 +76,7 @@ def buildTime = new Date().format("yyyy-MM-dd'T'HH:mm'Z'", TimeZone.getTimeZone(
 
 android {
   compileSdkVersion 20
-  buildToolsVersion "19.1.0"
+  buildToolsVersion "20.0.0"
 
   defaultConfig {
     minSdkVersion 15

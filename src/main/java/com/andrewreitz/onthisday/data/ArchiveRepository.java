@@ -2,7 +2,7 @@ package com.andrewreitz.onthisday.data;
 
 import com.andrewreitz.onthisday.data.api.archive.ArchiveService;
 import com.andrewreitz.onthisday.data.api.archive.model.Archive;
-import com.andrewreitz.onthisday.data.rx.EndObserver;
+import com.andrewreitz.velcro.rx.EndObserver;
 import com.google.common.collect.Maps;
 import java.util.Map;
 import rx.Observer;
