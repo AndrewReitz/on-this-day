@@ -53,4 +53,8 @@ public final class DataModule {
   @Provides @Singleton ArchiveRepository provideArchiveRepository(ArchiveService archiveService) {
     return new ArchiveRepository(archiveService);
   }
+
+  @Provides @Singleton M3uWriter provideM3uWriter(Application app) {
+    return new M3uWriter(app);
+  }
 }

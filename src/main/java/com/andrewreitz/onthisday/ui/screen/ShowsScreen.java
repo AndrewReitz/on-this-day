@@ -2,8 +2,10 @@ package com.andrewreitz.onthisday.ui.screen;
 
 import android.app.Application;
 import android.content.Context;
+import android.database.Cursor;
 import android.os.Bundle;
 
+import android.provider.MediaStore;
 import com.andrewreitz.onthisday.R;
 import com.andrewreitz.onthisday.data.RedditRepository;
 import com.andrewreitz.onthisday.data.api.reddit.model.Data;
@@ -58,8 +60,7 @@ public class ShowsScreen implements Blueprint, IsMain {
       this.actionBarOwner = actionBarOwner;
 
       actionBarOwner.setConfig(
-          new ActionBarOwner.Config(true, true, true, context.getString(R.string.app_name),
-              null));
+          new ActionBarOwner.Config(true, true, true, context.getString(R.string.app_name)));
     }
 
     @Override public void onLoad(Bundle savedInstanceState) {
@@ -84,7 +85,7 @@ public class ShowsScreen implements Blueprint, IsMain {
     }
 
     public void onShowSelected(Data show) {
-      flow.goTo(new ShowDetailScreen(context, actionBarOwner, show));
+      flow.goTo(new ShowDetailScreen(show));
     }
 
     public void visibilityChanged(boolean visible) {
