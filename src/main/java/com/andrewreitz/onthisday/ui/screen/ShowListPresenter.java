@@ -13,9 +13,11 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import mortar.ViewPresenter;
+import rx.Observer;
 import rx.Subscription;
 import rx.functions.Action1;
 import rx.subscriptions.Subscriptions;
+import timber.log.Timber;
 
 @Singleton
 public class ShowListPresenter extends ViewPresenter<ShowListView> {
@@ -42,13 +44,24 @@ public class ShowListPresenter extends ViewPresenter<ShowListView> {
 
     final ShowListView view = getView();
 
-    request = dataLoader.loadData(shows -> {
-      view.getShows().add(shows);
-      view.hideSpinner();
-    });
+    Observer<List<Data>> showObserver = new Observer<List<Data>>() {
+      @Override public void onCompleted() {
+        view.hideSpinner();
+      }
 
-    view.setLoadMoreListener((name, page) -> request =
-        dataLoader.loadMoreData(name, page, shows -> view.getShows().add(shows)));
+      @Override public void onError(Throwable throwable) {
+        // TODO Show error screen.
+        Timber.e(throwable, "Error loading shows");
+      }
+
+      @Override public void onNext(List<Data> shows) {
+        view.getShows().add(shows);
+      }
+    };
+
+    request = dataLoader.loadData(showObserver);
+    view.setLoadMoreListener(
+        (name, page) -> request = dataLoader.loadMoreData(name, page, showObserver));
   }
 
   @Override public void onExitScope() {
@@ -70,8 +83,8 @@ public class ShowListPresenter extends ViewPresenter<ShowListView> {
   }
 
   public interface DataLoader {
-    Subscription loadData(Action1<List<Data>> action);
+    Subscription loadData(Observer<List<Data>> observer);
 
-    Subscription loadMoreData(String name, int page, Action1<List<Data>> action);
+    Subscription loadMoreData(String name, int page, Observer<List<Data>> observer);
   }
 }

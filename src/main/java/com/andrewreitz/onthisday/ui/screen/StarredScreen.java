@@ -7,15 +7,18 @@ import com.andrewreitz.onthisday.ui.motar.core.Main;
 import com.andrewreitz.onthisday.ui.show.ShowListView;
 import dagger.Provides;
 import flow.Layout;
+import java.util.Collections;
 import java.util.List;
 import javax.inject.Singleton;
 import mortar.Blueprint;
+import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.Subscriptions;
 import shillelagh.Shillelagh;
+import timber.log.Timber;
 
 @Layout(R.layout.view_show_list)
 public class StarredScreen implements Blueprint, IsMain {
@@ -45,15 +48,15 @@ public class StarredScreen implements Blueprint, IsMain {
       this.shillelagh = shillelagh;
     }
 
-    @Override public Subscription loadData(Action1<List<Data>> action) {
+    @Override public Subscription loadData(Observer<List<Data>> observer) {
       return shillelagh.get(Data.class)
           .buffer(10)
           .subscribeOn(Schedulers.io())
           .observeOn(AndroidSchedulers.mainThread())
-          .subscribe(action::call);
+          .subscribe(observer);
     }
 
-    @Override public Subscription loadMoreData(String name, int page, Action1<List<Data>> action) {
+    @Override public Subscription loadMoreData(String name, int page, Observer<List<Data>> observer) {
       return Subscriptions.empty();
     }
   }

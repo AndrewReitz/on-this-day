@@ -11,6 +11,7 @@ import flow.Layout;
 import java.util.List;
 import javax.inject.Singleton;
 import mortar.Blueprint;
+import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -44,21 +45,21 @@ public class ShowsScreen implements Blueprint, IsMain {
       this.onThisDayRedditRepository = onThisDayRedditRepository;
     }
 
-    @Override public Subscription loadData(final Action1<List<Data>> action) {
+    @Override public Subscription loadData(Observer<List<Data>> observer) {
       return onThisDayRedditRepository.loadReddit()
           .toList()
           .subscribeOn(Schedulers.io())
           .observeOn(AndroidSchedulers.mainThread())
-          .subscribe(action::call);
+          .subscribe(observer);
     }
 
-    @Override public Subscription loadMoreData(String name, int page, Action1<List<Data>> action) {
+    @Override public Subscription loadMoreData(String name, int page, Observer<List<Data>> observer) {
       return onThisDayRedditRepository.loadReddit(name,
           page * OnThisDayRedditRepository.COUNT_INCREMENT)
           .toList()
           .subscribeOn(Schedulers.io())
           .observeOn(AndroidSchedulers.mainThread())
-          .subscribe(action::call);
+          .subscribe(observer);
     }
   }
 }
