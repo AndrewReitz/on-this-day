@@ -1,17 +1,24 @@
 package com.andrewreitz.onthisday.ui.show;
 
 import android.content.Context;
+import android.text.style.StyleSpan;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.andrewreitz.onthisday.R;
-import com.andrewreitz.onthisday.data.api.reddit.model.Data;
-
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import com.andrewreitz.onthisday.R;
+import com.andrewreitz.onthisday.data.api.reddit.model.Data;
+import com.andrewreitz.onthisday.util.TextFormatter;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static android.graphics.Typeface.BOLD;
 
 public class ShowItemView extends RelativeLayout {
+
+  private static final Pattern PATTERN_TO_BOLD =
+      Pattern.compile("[0-9]{1,2}/[0-9]{1,2}/[0-9]{2,4}");
 
   @InjectView(R.id.music_item_text) TextView textView;
 
@@ -25,6 +32,12 @@ public class ShowItemView extends RelativeLayout {
   }
 
   public void bindTo(Data show) {
-    textView.setText(show.getTitle());
+    final String title = show.getTitle().replace("On this day: ", "");
+    final Matcher titleMatcher = PATTERN_TO_BOLD.matcher(title);
+    //noinspection ResultOfMethodCallIgnored
+    titleMatcher.find();
+    final CharSequence formattedTitle = TextFormatter.setSpan(title, titleMatcher.start(), //
+        titleMatcher.end(), new StyleSpan(BOLD));
+    textView.setText(formattedTitle);
   }
 }

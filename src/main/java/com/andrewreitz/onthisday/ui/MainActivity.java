@@ -22,6 +22,8 @@ import com.andrewreitz.onthisday.data.SeenNavDrawer;
 import com.andrewreitz.onthisday.ui.motar.android.ActionBarOwner;
 import com.andrewreitz.onthisday.ui.motar.core.Main;
 import com.andrewreitz.onthisday.ui.motar.core.MainView;
+import com.andrewreitz.onthisday.ui.screen.ShowsScreen;
+import com.andrewreitz.onthisday.ui.screen.StarredScreen;
 import com.inkapplications.preferences.BooleanPreference;
 
 import java.util.List;
@@ -51,17 +53,20 @@ public final class MainActivity extends Activity implements ActionBarOwner.View 
   @InjectView(R.id.container) MainView mainView;
   @InjectView(R.id.nav_drawer_layout) DrawerLayout drawerLayout;
 
+  private boolean navDrawerEnable = true;
   private ActionBarDrawerToggle drawerToggle;
   private MortarActivityScope activityScope;
   private Flow mainFlow;
   private List<MenuAction> actionBarMenuAction;
 
   @OnClick(R.id.nav_drawer_home) void navigateHome() {
-
+    mainFlow.replaceTo(new ShowsScreen());
+    drawerLayout.closeDrawers();
   }
 
   @OnClick(R.id.nav_drawer_stared) void navigateToStarred() {
-
+    mainFlow.replaceTo(new StarredScreen());
+    drawerLayout.closeDrawers();
   }
 
   @OnClick(R.id.nav_drawer_settings) void navigateToSettings() {
@@ -184,8 +189,11 @@ public final class MainActivity extends Activity implements ActionBarOwner.View 
   }
 
   @Override public void setNavDrawerEnabled(boolean enabled) {
+    navDrawerEnable = enabled;
     if (drawerToggle != null) {
       drawerToggle.setDrawerIndicatorEnabled(enabled);
+      drawerLayout.setDrawerLockMode(
+          enabled ? DrawerLayout.LOCK_MODE_UNLOCKED : DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
     }
   }
 
@@ -196,13 +204,8 @@ public final class MainActivity extends Activity implements ActionBarOwner.View 
   private void setupNavigationDrawer() {
     final ActionBar actionBar = getActionBar();
 
-    drawerToggle = new ActionBarDrawerToggle(
-        this,
-        drawerLayout,
-        R.drawable.ic_drawer,
-        R.string.navigation_drawer_open,
-        R.string.navigation_drawer_close
-    ) {
+    drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_drawer,
+        R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
 
       /** Called when a drawer has settled in a completely closed state. */
       public void onDrawerClosed(View view) {
@@ -224,9 +227,9 @@ public final class MainActivity extends Activity implements ActionBarOwner.View 
     drawerLayout.setDrawerListener(drawerToggle);
     drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, Gravity.START);
 
-    //noinspection ConstantConditions
-    actionBar.setDisplayHomeAsUpEnabled(true);
-    actionBar.setHomeButtonEnabled(true);
+    drawerToggle.setDrawerIndicatorEnabled(navDrawerEnable);
+    drawerLayout.setDrawerLockMode(
+        navDrawerEnable ? DrawerLayout.LOCK_MODE_UNLOCKED : DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
     // Display nav drawer if it's the first time the app is opened per Google's guidelines
     if (!seenNavDrawer.get()) {

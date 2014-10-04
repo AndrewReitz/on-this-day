@@ -34,15 +34,10 @@ import rx.functions.Action0;
 public class ActionBarOwner extends Presenter<ActionBarOwner.View> {
   public interface View {
     void setShowHomeEnabled(boolean enabled);
-
     void setUpButtonEnabled(boolean enabled);
-
     void setTitle(CharSequence title);
-
     void setMenu(List<MenuAction> actions);
-
     void setNavDrawerEnabled(boolean enabled);
-
     Context getMortarContext();
   }
 
@@ -68,7 +63,7 @@ public class ActionBarOwner extends Presenter<ActionBarOwner.View> {
   }
 
   public static class MenuAction {
-    @DrawableRes public final int resIcon;
+    @DrawableRes public int resIcon;
 
     public final CharSequence title;
     public final Action0 action;
@@ -77,6 +72,11 @@ public class ActionBarOwner extends Presenter<ActionBarOwner.View> {
       this.resIcon = resIcon;
       this.title = title;
       this.action = action;
+    }
+
+    /** Updated the icon */
+    public void setResIcon(@DrawableRes int resIcon) {
+      this.resIcon = resIcon;
     }
   }
 

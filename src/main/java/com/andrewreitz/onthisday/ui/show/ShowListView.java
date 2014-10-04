@@ -8,16 +8,18 @@ import butterknife.InjectView;
 import butterknife.OnItemClick;
 import com.andrewreitz.onthisday.R;
 import com.andrewreitz.onthisday.data.api.reddit.model.Data;
+import com.andrewreitz.onthisday.ui.screen.ShowListPresenter;
 import com.andrewreitz.velcro.betterviewanimator.BetterViewAnimator;
 import com.andrewreitz.velcro.infinitescroll.InfiniteScrollListener;
 import javax.inject.Inject;
 import mortar.Mortar;
 import rx.functions.Action2;
 
-import static com.andrewreitz.onthisday.ui.screen.ShowsScreen.Presenter;
-
 public class ShowListView extends BetterViewAnimator {
-  @Inject Presenter presenter;
+  /** The number of shows to pre-load in the list view */
+  private static final int PRE_LOAD_SHOWS = 25;
+
+  @Inject ShowListPresenter presenter;
 
   @InjectView(R.id.music_list) ListView musicListView;
 
@@ -42,6 +44,11 @@ public class ShowListView extends BetterViewAnimator {
     presenter.dropView(this);
   }
 
+  @Override protected void onWindowVisibilityChanged(int visibility) {
+    super.onWindowVisibilityChanged(visibility);
+    presenter.visibilityChanged(visibility == VISIBLE);
+  }
+
   @OnItemClick(R.id.music_list) void onShowClicked(int position) {
     presenter.onShowSelected(adapter.getItem(position));
   }
@@ -52,7 +59,7 @@ public class ShowListView extends BetterViewAnimator {
 
   /** Set a listener that will continually populate the shows list */
   public void setLoadMoreListener(final Action2<String, Integer> loadMoreListener) {
-    musicListView.setOnScrollListener(new InfiniteScrollListener(25) {
+    musicListView.setOnScrollListener(new InfiniteScrollListener(PRE_LOAD_SHOWS) {
       @Override public void loadMore(int page, int totalItemsCount) {
         final Data item = adapter.getItem(totalItemsCount - 1);
         loadMoreListener.call(item.getName(), page);

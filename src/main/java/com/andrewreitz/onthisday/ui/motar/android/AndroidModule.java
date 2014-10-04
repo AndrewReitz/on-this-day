@@ -24,7 +24,7 @@ import dagger.Provides;
     complete = false,
     library = true
 )
-public class ActionBarModule {
+public class AndroidModule {
   @Provides @Singleton ActionBarOwner provideActionBarOwner() {
     return new ActionBarOwner();
   }

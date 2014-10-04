@@ -1,12 +1,9 @@
 package com.andrewreitz.onthisday.ui.screen;
 
 import android.app.Application;
-import android.content.ComponentName;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.widget.Toast;
 import com.andrewreitz.onthisday.R;
@@ -18,6 +15,7 @@ import com.andrewreitz.onthisday.ui.motar.android.ActionBarOwner;
 import com.andrewreitz.onthisday.ui.motar.core.Main;
 import com.andrewreitz.onthisday.ui.motar.core.MainScope;
 import com.andrewreitz.onthisday.ui.showdetails.ShowDetailsView;
+import com.andrewreitz.onthisday.util.Strings;
 import com.andrewreitz.velcro.rx.EndlessObserver;
 import com.google.common.collect.Lists;
 import dagger.Provides;
@@ -30,6 +28,15 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import mortar.Blueprint;
 import mortar.ViewPresenter;
+import rx.Observable;
+import rx.Subscriber;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action0;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
+import rx.subscriptions.Subscriptions;
+import shillelagh.Shillelagh;
 import timber.log.Timber;
 
 @Layout(R.layout.view_show_details)
@@ -72,16 +79,20 @@ public class ShowDetailScreen implements HasParent<ShowsScreen>, Blueprint {
   public static class Presenter extends ViewPresenter<ShowDetailsView> {
     private final Application app;
     private final ActionBarOwner actionBarOwner;
+    private final Shillelagh shillelagh;
     private final M3uWriter m3uWriter;
     private final Flow flow;
     private final ArchiveRepository archiveRepository;
     private final Data show;
     private final String showUrl;
 
-    @Inject public Presenter(Application app, ActionBarOwner actionBarOwner, M3uWriter m3uWriter,
-        @MainScope Flow flow, ArchiveRepository archiveRepository, Data show) {
+    private Subscription actionbarSubscription = Subscriptions.empty();
+
+    @Inject public Presenter(Application app, ActionBarOwner actionBarOwner, Shillelagh shillelagh,
+        M3uWriter m3uWriter, @MainScope Flow flow, ArchiveRepository archiveRepository, Data show) {
       this.app = app;
       this.actionBarOwner = actionBarOwner;
+      this.shillelagh = shillelagh;
       this.m3uWriter = m3uWriter;
       this.flow = flow;
       this.archiveRepository = archiveRepository;
@@ -100,36 +111,96 @@ public class ShowDetailScreen implements HasParent<ShowsScreen>, Blueprint {
       setupActionBarMenu();
     }
 
+    @Override protected void onExitScope() {
+      ensureStopped();
+    }
+
+    public void visibilityChanged(boolean visible) {
+      if (!visible) {
+        ensureStopped();
+      }
+    }
+
+    private void ensureStopped() {
+      actionbarSubscription.unsubscribe();
+    }
+
     private void setupActionBarMenu() {
-      actionBarOwner.setConfig(
-          new ActionBarOwner.Config(true, true, false, app.getString(R.string.app_name),
-              new ActionBarOwner.MenuAction(R.drawable.ic_favorite,
-                  app.getString(R.string.favorite_show),
-                  () -> Toast.makeText(app, "Saved!", Toast.LENGTH_LONG).show()),
-              new ActionBarOwner.MenuAction(R.drawable.ic_play, app.getString(R.string.play_show),
-                  () -> archiveRepository.loadShow(showUrl, new EndlessObserver<Archive>() {
-                    @Override public void onNext(Archive archive) {
-                      final String filePath =
-                          String.format("http://%s%s", archive.getServer(), archive.getDir());
-                      final List<String> paths = Lists.newLinkedList();
+      actionbarSubscription = createStarMenuAction().subscribe(
+          starActionMenu -> actionBarOwner.setConfig(
+              new ActionBarOwner.Config(true, true, false, app.getString(R.string.app_name),
+                  starActionMenu, createPlayMenuAction())));
+    }
 
-                      archive.getFiles()
-                          .filter(s -> s.endsWith(".mp3"))
-                          .subscribe(fileName -> paths.add(filePath + fileName));
+    private ActionBarOwner.MenuAction createPlayMenuAction() {
+      return new ActionBarOwner.MenuAction(R.drawable.ic_play, app.getString(R.string.play_show),
+          () -> archiveRepository.loadShow(showUrl, new EndlessObserver<Archive>() {
+            @Override public void onNext(Archive archive) {
+              final String filePath =
+                  String.format("http://%s%s", archive.getServer(), archive.getDir());
+              final List<String> paths = Lists.newLinkedList();
 
-                      try {
-                        m3uWriter.createM3uFile(paths).subscribe(file -> {
-                          Intent intent = new Intent();
-                          intent.setAction(Intent.ACTION_VIEW);
-                          intent.setDataAndType(Uri.fromFile(file), "audio/mp3");
-                          intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                          app.startActivity(intent);
-                        });
-                      } catch (IOException e) {
-                        Timber.e(e, "Error creating m3u file");
-                      }
-                    }
-                  }))));
+              archive.getFiles()
+                  .filter(s -> s.endsWith(".mp3"))
+                  .subscribe(fileName -> paths.add(filePath + fileName));
+
+              try {
+                final String title = Strings.join(archive.getMetadata().getTitle());
+                m3uWriter.createM3uFile(title, paths).subscribe(file -> {
+                  Intent intent = new Intent();
+                  intent.setAction(Intent.ACTION_VIEW);
+                  intent.setDataAndType(Uri.fromFile(file), "audio/mp3");
+                  intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                  app.startActivity(intent);
+                });
+              } catch (IOException e) {
+                Timber.e(e, "Error creating m3u file");
+              }
+            }
+          }));
+    }
+
+    // TODO Make this readable...
+    private Observable<ActionBarOwner.MenuAction> createStarMenuAction() {
+      return Observable.create(
+          (Subscriber<? super ActionBarOwner.MenuAction> subscriber) -> shillelagh.get(Data.class)
+              .contains(show)
+              .subscribeOn(Schedulers.io())
+              .observeOn(AndroidSchedulers.mainThread())
+              .subscribe(contains -> {
+                if (!subscriber.isUnsubscribed()) {
+                  final String title = app.getString(R.string.favorite_show);
+                  if (!contains) {
+                    // This double check might not be necessary.
+                    subscriber.onNext(new ActionBarOwner.MenuAction(R.drawable.ic_favorite, title,
+                        () -> shillelagh.get(Data.class)
+                            .contains(show)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(c -> {
+                              if (!c) {
+                                shillelagh.insert(show);
+                                Toast.makeText(app, app.getString(R.string.saved_exclamation),
+                                    Toast.LENGTH_LONG).show();
+
+                                // Force a refresh
+                                setupActionBarMenu();
+                              }
+                            })));
+                  } else {
+                    subscriber.onNext(
+                        new ActionBarOwner.MenuAction(R.drawable.ic_favorited, title, () -> {
+                          shillelagh.delete(show);
+                          Toast.makeText(app, app.getString(R.string.removed_exclemation),
+                              Toast.LENGTH_LONG).show();
+
+                          // Force a refresh
+                          setupActionBarMenu();
+                        }));
+                  }
+                  subscriber.onCompleted();
+                }
+              }));
     }
   }
 }

@@ -11,5 +11,7 @@
     <string name="action_settings">Settings</string>
   <string name="favorite_show">Favorite Show</string>
   <string name="play_show">Play Show</string>
+  <string name="saved_exclamation">Saved!</string>
+  <string name="removed_exclemation">Removed!</string>
 
 </resources>

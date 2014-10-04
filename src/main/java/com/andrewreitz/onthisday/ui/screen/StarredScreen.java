@@ -1,7 +1,6 @@
 package com.andrewreitz.onthisday.ui.screen;
 
 import com.andrewreitz.onthisday.R;
-import com.andrewreitz.onthisday.data.OnThisDayRedditRepository;
 import com.andrewreitz.onthisday.data.api.reddit.model.Data;
 import com.andrewreitz.onthisday.ui.flow.IsMain;
 import com.andrewreitz.onthisday.ui.motar.core.Main;
@@ -15,15 +14,17 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
+import rx.subscriptions.Subscriptions;
+import shillelagh.Shillelagh;
 
 @Layout(R.layout.view_show_list)
-public class ShowsScreen implements Blueprint, IsMain {
+public class StarredScreen implements Blueprint, IsMain {
   @Override public String getMortarScopeName() {
     return getClass().getName();
   }
 
   @Override public Object getDaggerModule() {
-    return new Module();
+    return new StarredScreen.Module();
   }
 
   @dagger.Module(
@@ -31,34 +32,29 @@ public class ShowsScreen implements Blueprint, IsMain {
       addsTo = Main.Module.class, //
       complete = false) //
   class Module {
-    @Provides @Singleton ShowListPresenter.DataLoader provideShowLoader(
-        OnThisDayRedditRepository repository) {
-      return new RedditShowLoader(repository);
+    @Provides @Singleton ShowListPresenter.DataLoader provideStarredLoader(Shillelagh shillelagh) {
+      return new StarredLoader(shillelagh);
     }
   }
 
-  static class RedditShowLoader implements ShowListPresenter.DataLoader {
-    private final OnThisDayRedditRepository onThisDayRedditRepository;
+  static class StarredLoader implements ShowListPresenter.DataLoader {
 
-    RedditShowLoader(OnThisDayRedditRepository onThisDayRedditRepository) {
-      this.onThisDayRedditRepository = onThisDayRedditRepository;
+    private Shillelagh shillelagh;
+
+    StarredLoader(Shillelagh shillelagh) {
+      this.shillelagh = shillelagh;
     }
 
-    @Override public Subscription loadData(final Action1<List<Data>> action) {
-      return onThisDayRedditRepository.loadReddit()
-          .toList()
+    @Override public Subscription loadData(Action1<List<Data>> action) {
+      return shillelagh.get(Data.class)
+          .buffer(10)
           .subscribeOn(Schedulers.io())
           .observeOn(AndroidSchedulers.mainThread())
           .subscribe(action::call);
     }
 
     @Override public Subscription loadMoreData(String name, int page, Action1<List<Data>> action) {
-      return onThisDayRedditRepository.loadReddit(name,
-          page * OnThisDayRedditRepository.COUNT_INCREMENT)
-          .toList()
-          .subscribeOn(Schedulers.io())
-          .observeOn(AndroidSchedulers.mainThread())
-          .subscribe(action::call);
+      return Subscriptions.empty();
     }
   }
 }

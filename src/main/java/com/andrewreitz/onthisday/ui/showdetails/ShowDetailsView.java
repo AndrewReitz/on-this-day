@@ -40,6 +40,11 @@ public class ShowDetailsView extends BetterViewAnimator {
     presenter.dropView(this);
   }
 
+  @Override protected void onWindowVisibilityChanged(int visibility) {
+    super.onWindowVisibilityChanged(visibility);
+    presenter.visibilityChanged(visibility == VISIBLE);
+  }
+
   public void bindTo(Archive show) {
     final Metadata metadata = show.getMetadata();
     title.setText(Strings.join(metadata.getTitle()));

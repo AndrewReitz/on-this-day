@@ -2,10 +2,13 @@ package com.andrewreitz.onthisday.data;
 
 import android.app.Application;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 
 import com.andrewreitz.onthisday.data.api.archive.ArchiveService;
-import com.andrewreitz.onthisday.data.api.reddit.RedditService;
+import com.andrewreitz.onthisday.data.api.reddit.OnThisDayRedditService;
+import com.andrewreitz.onthisday.data.database.OnThisDaySalineOpenHelper;
 import com.inkapplications.preferences.BooleanPreference;
 
 import javax.inject.Singleton;
@@ -13,6 +16,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import retrofit.RestAdapter;
+import shillelagh.Shillelagh;
 
 @Module(
     complete = false,
@@ -35,8 +39,8 @@ public final class DataModule {
         .build();
   }
 
-  @Provides @Singleton RedditService provideRedditService(@Reddit RestAdapter restAdapter) {
-    return restAdapter.create(RedditService.class);
+  @Provides @Singleton OnThisDayRedditService provideRedditService(@Reddit RestAdapter restAdapter) {
+    return restAdapter.create(OnThisDayRedditService.class);
   }
 
   @Provides @Singleton @Archive RestAdapter provideArchiveRestAdapter() {
@@ -55,6 +59,15 @@ public final class DataModule {
   }
 
   @Provides @Singleton M3uWriter provideM3uWriter(Application app) {
-    return new M3uWriter(app);
+    return new M3uWriter(
+        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC));
+  }
+
+  @Provides @Singleton SQLiteOpenHelper provideSqliteOpenHelper(Application app) {
+    return new OnThisDaySalineOpenHelper(app);
+  }
+
+  @Provides @Singleton Shillelagh provideShillelagh(SQLiteOpenHelper sqLiteOpenHelper) {
+    return new Shillelagh(sqLiteOpenHelper);
   }
 }
