@@ -15,7 +15,6 @@ import javax.inject.Singleton;
 import mortar.ViewPresenter;
 import rx.Observer;
 import rx.Subscription;
-import rx.functions.Action1;
 import rx.subscriptions.Subscriptions;
 import timber.log.Timber;
 
@@ -62,6 +61,11 @@ public class ShowListPresenter extends ViewPresenter<ShowListView> {
     request = dataLoader.loadData(showObserver);
     view.setLoadMoreListener(
         (name, page) -> request = dataLoader.loadMoreData(name, page, showObserver));
+  }
+
+  @Override protected void onSave(Bundle outState) {
+    super.onSave(outState);
+
   }
 
   @Override public void onExitScope() {

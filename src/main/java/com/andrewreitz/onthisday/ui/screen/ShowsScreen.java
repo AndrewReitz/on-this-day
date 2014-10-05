@@ -14,10 +14,9 @@ import mortar.Blueprint;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
-@Layout(R.layout.view_show_list)
+@Layout(R.layout.show_list_view)
 public class ShowsScreen implements Blueprint, IsMain {
   @Override public String getMortarScopeName() {
     return getClass().getName();

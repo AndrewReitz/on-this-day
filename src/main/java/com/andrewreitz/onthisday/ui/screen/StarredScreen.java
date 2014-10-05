@@ -7,20 +7,17 @@ import com.andrewreitz.onthisday.ui.motar.core.Main;
 import com.andrewreitz.onthisday.ui.show.ShowListView;
 import dagger.Provides;
 import flow.Layout;
-import java.util.Collections;
 import java.util.List;
 import javax.inject.Singleton;
 import mortar.Blueprint;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.Subscriptions;
 import shillelagh.Shillelagh;
-import timber.log.Timber;
 
-@Layout(R.layout.view_show_list)
+@Layout(R.layout.show_list_view)
 public class StarredScreen implements Blueprint, IsMain {
   @Override public String getMortarScopeName() {
     return getClass().getName();

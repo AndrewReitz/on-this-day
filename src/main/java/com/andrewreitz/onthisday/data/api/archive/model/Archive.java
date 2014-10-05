@@ -8,12 +8,15 @@ public final class Archive {
   private final String dir;
   private final Metadata metadata;
   private final Map<String, FileData> files;
+  private final Map<String, String> misc;
 
-  private Archive(String server, String dir, Metadata metadata, Map<String, FileData> files) {
+  private Archive(String server, String dir, Metadata metadata, Map<String, FileData> files,
+      Map<String, String> misc) {
     this.server = server;
     this.dir = dir;
     this.metadata = metadata;
     this.files = files;
+    this.misc = misc;
   }
 
   public String getServer() {
@@ -38,5 +41,9 @@ public final class Archive {
 
   public Observable<String> getFiles() {
     return Observable.from(files.keySet());
+  }
+
+  public Map<String, String> getMisc() {
+    return misc;
   }
 }

@@ -3,6 +3,7 @@ package com.andrewreitz.onthisday.data;
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.net.Uri;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 
@@ -11,12 +12,16 @@ import com.andrewreitz.onthisday.data.api.reddit.OnThisDayRedditService;
 import com.andrewreitz.onthisday.data.database.OnThisDaySalineOpenHelper;
 import com.inkapplications.preferences.BooleanPreference;
 
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.picasso.OkHttpDownloader;
+import com.squareup.picasso.Picasso;
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
 import retrofit.RestAdapter;
 import shillelagh.Shillelagh;
+import timber.log.Timber;
 
 @Module(
     complete = false,
@@ -32,20 +37,27 @@ public final class DataModule {
     return new BooleanPreference(sharedPreferences, "seen_nav_drawer", false);
   }
 
+  @Provides @Singleton Picasso providePicasso(Application app) {
+    return new Picasso.Builder(app) //
+        .listener((picasso, uri, e) -> Timber.e(e, "Failed to load image: %s", uri)) //
+        .build();
+  }
+
   @Provides @Singleton @Reddit RestAdapter provideRedditRestAdapter() {
     return new RestAdapter.Builder() //
-        .setLogLevel(RestAdapter.LogLevel.FULL) // TOOD
+        .setLogLevel(RestAdapter.LogLevel.FULL) // TODO
         .setEndpoint("http://reddit.com") //
         .build();
   }
 
-  @Provides @Singleton OnThisDayRedditService provideRedditService(@Reddit RestAdapter restAdapter) {
+  @Provides @Singleton OnThisDayRedditService provideRedditService(
+      @Reddit RestAdapter restAdapter) {
     return restAdapter.create(OnThisDayRedditService.class);
   }
 
   @Provides @Singleton @Archive RestAdapter provideArchiveRestAdapter() {
     return new RestAdapter.Builder() //
-        .setLogLevel(RestAdapter.LogLevel.FULL) // TOOD
+        .setLogLevel(RestAdapter.LogLevel.FULL) // TODO
         .setEndpoint("https://archive.org") //
         .build();
   }

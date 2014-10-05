@@ -13,5 +13,7 @@
   <string name="play_show">Play Show</string>
   <string name="saved_exclamation">Saved!</string>
   <string name="removed_exclemation">Removed!</string>
+  <string name="album_cover">Album Cover</string>
+  <string name="play">play</string>
 
 </resources>

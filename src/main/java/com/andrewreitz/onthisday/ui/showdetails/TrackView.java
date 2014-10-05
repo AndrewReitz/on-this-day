@@ -14,7 +14,7 @@ public class TrackView extends RelativeLayout {
 
   public TrackView(Context context) {
     super(context);
-    LayoutInflater.from(context).inflate(R.layout.view_track_details, this, true);
+    LayoutInflater.from(context).inflate(R.layout.track_details_view, this, true);
     ButterKnife.inject(this);
   }
 

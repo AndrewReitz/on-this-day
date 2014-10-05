@@ -40,8 +40,10 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"/>
 
-      <View android:layout_height="2dp"
-          android:padding="@dimen/default_layout_padding_half"
+      <View
+          android:layout_height="2dp"
+          android:layout_marginTop="@dimen/default_layout_padding_half"
+          android:layout_marginBottom="@dimen/default_layout_padding_half"
           android:layout_width="fill_parent"
           android:background="?android:attr/listDivider"/>
 

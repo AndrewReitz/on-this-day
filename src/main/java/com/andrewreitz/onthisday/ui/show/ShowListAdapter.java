@@ -35,7 +35,7 @@ public class ShowListAdapter extends BindableAdapter<Data> {
   }
 
   @Override public View newView(LayoutInflater inflater, int position, ViewGroup container) {
-    return inflater.inflate(R.layout.view_show_item, container, false);
+    return inflater.inflate(R.layout.show_item_view, container, false);
   }
 
   @Override public void bindView(Data item, int position, View view) {

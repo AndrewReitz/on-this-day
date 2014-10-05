@@ -3,7 +3,8 @@
 <com.andrewreitz.onthisday.ui.show.ShowListView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:id="@+id/show_list_view">
 
   <ProgressBar
       android:id="@+id/music_list_progress"
