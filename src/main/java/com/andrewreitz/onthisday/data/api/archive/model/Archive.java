@@ -1,7 +1,10 @@
 package com.andrewreitz.onthisday.data.api.archive.model;
 
 import java.util.Map;
+import java.util.Set;
 import rx.Observable;
+
+import static java.util.Map.Entry;
 
 public final class Archive {
   private final String server;
@@ -39,8 +42,8 @@ public final class Archive {
     return Observable.from(files.values());
   }
 
-  public Observable<String> getFiles() {
-    return Observable.from(files.keySet());
+  public Observable<Entry<String, FileData>> getFiles() {
+    return Observable.from(files.entrySet());
   }
 
   public Map<String, String> getMisc() {
