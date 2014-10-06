@@ -13,7 +13,8 @@ import com.andrewreitz.onthisday.util.Strings;
 import com.squareup.picasso.Picasso;
 
 public class AlbumCover extends FrameLayout {
-  @InjectView(R.id.player_album_title) TextView textView;
+  @InjectView(R.id.player_album_title) TextView albumTitle;
+  @InjectView(R.id.player_track_title) TextView trackTitle;
   @InjectView(R.id.player_album_image) ImageView albumCover;
 
   public AlbumCover(Context context, AttributeSet attrs) {
@@ -26,7 +27,7 @@ public class AlbumCover extends FrameLayout {
   }
 
   public void bindTo(Picasso picasso, Archive archive) {
-    textView.setText(Strings.join(archive.getMetadata().getTitle()));
+    albumTitle.setText(Strings.join(archive.getMetadata().getTitle()));
 
     String imageUrl = archive.getMisc().get("image");
     if (imageUrl != null) {
@@ -34,5 +35,9 @@ public class AlbumCover extends FrameLayout {
           .fit() //
           .into(albumCover);
     }
+  }
+
+  public void setTrackTitle(String trackTitle) {
+    this.trackTitle.setText(trackTitle);
   }
 }

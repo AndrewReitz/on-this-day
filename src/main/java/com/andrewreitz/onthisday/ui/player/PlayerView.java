@@ -19,13 +19,14 @@ import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import com.squareup.picasso.Picasso;
 import java.io.IOException;
-import java.util.Queue;
+import java.util.List;
 import javax.inject.Inject;
 import mortar.Mortar;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action0;
+import rx.functions.Actions;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
@@ -38,15 +39,14 @@ public class PlayerView extends LinearLayout {
   @InjectView(R.id.player_album_cover) AlbumCover albumCover;
 
   /* Play list */
-  private final Queue<Entry<String, FileData>> files;
-  private final MediaPlayer mediaPlayer;
+  private final List<Entry<String, FileData>> files = Lists.newArrayList();
+  private final MediaPlayer mediaPlayer = new MediaPlayer();
+  private int fileIndex = 0;
 
   private Uri serverPath;
 
   public PlayerView(Context context, AttributeSet attrs) {
     super(context, attrs);
-    files = Lists.newLinkedList();
-    mediaPlayer = new MediaPlayer();
     Mortar.inject(context, this);
   }
 
@@ -61,18 +61,69 @@ public class PlayerView extends LinearLayout {
     presenter.dropView(this);
   }
 
-  @Override public boolean isInEditMode() {
-    return true;
+  @OnClick(R.id.player_play_previous) void onPreviousPressed() {
+    mediaPlayer.stop();
+    previousSong();
   }
 
-  @OnClick(R.id.player_play_pause) void onPlayPausePress() {
+  @OnClick(R.id.player_play_pause) void onPlayPausePressed() {
+    // todo make sure in correct state before play is pressed.
     if (mediaPlayer.isPlaying()) {
       playPauseButton.setImageResource(R.drawable.ic_audio_play);
       mediaPlayer.pause();
     } else {
+      albumCover.setTrackTitle(getTrackTitle());
       playPauseButton.setImageResource(R.drawable.ic_audio_pause);
       mediaPlayer.start();
     }
+  }
+
+  @OnClick(R.id.player_play_next) void onNextPressed() {
+    mediaPlayer.stop();
+    nextSong();
+  }
+
+  public void bindTo(Picasso picasso, Archive archive) {
+    albumCover.bindTo(picasso, archive);
+
+    serverPath = new Uri.Builder().scheme("http")
+        .encodedAuthority(archive.getServer())
+        .encodedPath(archive.getDir())
+        .build();
+
+    archive.getFiles().filter(
+        entry -> entry.getValue().getFormat().equals("VBR MP3")) // TODO Make enum
+        .toList().subscribe(files::addAll);
+
+    final Optional<Uri> filePath = getNextUrl();
+
+    mediaPlayer.setOnCompletionListener(mp -> {
+      nextSong();
+    });
+
+    playFile(filePath, () -> { /* Wait for play button to be pressed */ });
+  }
+
+  private void previousSong() {
+    fileIndex--;
+    navigateSong();
+  }
+
+  private void nextSong() {
+    fileIndex++;
+    navigateSong();
+  }
+
+  private void navigateSong() {
+    albumCover.setTrackTitle(getTrackTitle());
+    final Optional<Uri> url = getNextUrl();
+    playFile(url, mediaPlayer::start);
+  }
+
+  // TODO return optional
+  private String getTrackTitle() {
+    final Entry<String, FileData> file = files.get(fileIndex);
+    return file.getValue().getTitle();
   }
 
   private Observable<Void> playFile(final Uri filePath) {
@@ -94,36 +145,15 @@ public class PlayerView extends LinearLayout {
     });
   }
 
-  public void bindTo(Picasso picasso, Archive archive) {
-    albumCover.bindTo(picasso, archive);
-
-    serverPath = new Uri.Builder().scheme("http")
-        .encodedAuthority(archive.getServer())
-        .encodedPath(archive.getDir())
-        .build();
-
-    archive.getFiles().filter(
-        entry -> entry.getValue().getFormat().equals("VBR MP3")) // TODO Make enum
-        .toList().subscribe(files::addAll);
-
-    final Optional<Uri> filePath = getNextUrl();
-
-    mediaPlayer.setOnCompletionListener(mp -> {
-      final Optional<Uri> url = getNextUrl();
-      playFile(url, mediaPlayer::start);
-    });
-
-    playFile(filePath, () -> { /* Wait for play button to be pressed */ });
-  }
-
   private void playFile(Optional<Uri> filePath, final Action0 action) {
     if (filePath.isPresent()) {
       playFile(filePath.get()) //
           .subscribeOn(Schedulers.computation()) //
           .observeOn(AndroidSchedulers.mainThread())  //
           .subscribe( //
-              aVoid -> action.call(), //
-              throwable -> Timber.e(throwable, "Error playing music") //
+              Actions.empty(), //
+              throwable -> Timber.e(throwable, "Error playing music"), //
+              action == null ? Actions.empty() : action //
           );
     } else {
       Toast.makeText(getContext(), "No more songs to play", Toast.LENGTH_LONG).show();
@@ -135,7 +165,7 @@ public class PlayerView extends LinearLayout {
       return Optional.absent();
     }
 
-    final Entry<String, FileData> file = files.remove();
+    final Entry<String, FileData> file = files.get(fileIndex);
     return Optional.of(serverPath.buildUpon() //
         .appendEncodedPath(file.getKey()) //
         .build());

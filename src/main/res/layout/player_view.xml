@@ -3,6 +3,7 @@
 <com.andrewreitz.onthisday.ui.player.PlayerView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/player_view_container"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -28,9 +29,9 @@
         android:id="@+id/player_album_title"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_gravity="bottom"
-        android:gravity="bottom"
-        android:background="@drawable/gradient_overlay"
+        android:layout_gravity="top"
+        android:gravity="top"
+        android:background="@drawable/gradient_overlay_top"
         android:padding="6dp"
         android:singleLine="true"
         android:ellipsize="end"
@@ -38,19 +39,48 @@
         android:textSize="15sp"
         tools:text="Album Title"
         />
+    <TextView
+        android:id="@+id/player_track_title"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_gravity="bottom"
+        android:gravity="bottom"
+        android:background="@drawable/gradient_overlay_bottom"
+        android:padding="6dp"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:textColor="#fff"
+        android:textSize="15sp"
+        tools:text="Track Title"
+        />
   </com.andrewreitz.onthisday.ui.player.AlbumCover>
 
-  <RelativeLayout
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:layout_marginTop="@dimen/default_layout_padding_half">
+  <GridLayout
+      xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:tools="http://schemas.android.com/tools"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:padding="12dp"
+      android:columnCount="3">
+    <ImageButton
+        android:id="@+id/player_play_previous"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_audio_previous"
+        android:contentDescription="@string/play"/>
     <ImageButton
         android:id="@+id/player_play_pause"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_audio_play"
-        android:layout_centerInParent="true"
         android:contentDescription="@string/play"/>
-  </RelativeLayout>
+    <ImageButton
+        android:id="@+id/player_play_next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_audio_next"
+        android:contentDescription="@string/play"/>
+  </GridLayout>
 
 </com.andrewreitz.onthisday.ui.player.PlayerView>
