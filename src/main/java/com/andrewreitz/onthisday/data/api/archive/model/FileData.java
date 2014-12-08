@@ -1,6 +1,8 @@
 package com.andrewreitz.onthisday.data.api.archive.model;
 
-public final class FileData {
+import java.io.Serializable;
+
+public final class FileData implements Serializable {
   private final String source;
   private final String creator;
   private final String title;

@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.andrewreitz.onthisday.OnThisDayApp;
 import com.andrewreitz.onthisday.R;
 import com.andrewreitz.onthisday.data.SeenNavDrawer;
+import com.andrewreitz.onthisday.mediaplayer.event.StopServiceEvent;
 import com.andrewreitz.onthisday.ui.motar.android.ActionBarOwner;
 import com.andrewreitz.onthisday.ui.motar.core.Main;
 import com.andrewreitz.onthisday.ui.motar.core.MainView;
@@ -26,6 +27,7 @@ import com.andrewreitz.onthisday.ui.screen.ShowsScreen;
 import com.andrewreitz.onthisday.ui.screen.StarredScreen;
 import com.inkapplications.preferences.BooleanPreference;
 
+import com.squareup.otto.Bus;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -49,6 +51,7 @@ public final class MainActivity extends Activity implements ActionBarOwner.View 
   @Inject AppContainer appContainer;
   @Inject @SeenNavDrawer BooleanPreference seenNavDrawer;
   @Inject ActionBarOwner actionBarOwner;
+  @Inject Bus bus;
 
   @InjectView(R.id.container) MainView mainView;
   @InjectView(R.id.nav_drawer_layout) DrawerLayout drawerLayout;
@@ -140,6 +143,8 @@ public final class MainActivity extends Activity implements ActionBarOwner.View 
       parentScope.destroyChild(activityScope);
       activityScope = null;
     }
+
+    bus.post(new StopServiceEvent());
   }
 
   /** Inform the view about back events. */

@@ -2,19 +2,12 @@ package com.andrewreitz.onthisday;
 
 import android.app.Application;
 import android.content.Context;
-
 import com.andrewreitz.onthisday.ui.ActivityHierarchyServer;
-
-import java.util.concurrent.TimeUnit;
-
-import javax.inject.Inject;
-
-import butterknife.ButterKnife;
 import dagger.ObjectGraph;
 import hugo.weaving.DebugLog;
+import javax.inject.Inject;
 import mortar.Mortar;
 import mortar.MortarScope;
-import timber.log.Timber;
 
 public class OnThisDayApp extends Application {
 
@@ -47,5 +40,4 @@ public class OnThisDayApp extends Application {
   public static OnThisDayApp get(Context context) {
     return (OnThisDayApp) context.getApplicationContext();
   }
-
 }

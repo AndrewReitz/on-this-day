@@ -1,9 +1,11 @@
 package com.andrewreitz.onthisday.ui.screen;
 
+import android.app.Application;
 import android.os.Bundle;
 import com.andrewreitz.onthisday.R;
 import com.andrewreitz.onthisday.data.api.archive.model.Archive;
 import com.andrewreitz.onthisday.data.api.reddit.model.Data;
+import com.andrewreitz.onthisday.mediaplayer.SimpleMusicPlayerService;
 import com.andrewreitz.onthisday.ui.motar.android.ActionBarOwner;
 import com.andrewreitz.onthisday.ui.motar.core.Main;
 import com.andrewreitz.onthisday.ui.player.PlayerView;
@@ -45,18 +47,21 @@ public class PlayerScreen implements HasParent<ShowDetailScreen>, Blueprint {
       addsTo = Main.Module.class,
       complete = false)
   public class Module {
-    @Provides Archive provideArchive() {
+    @Provides @Singleton Archive provideArchive() {
       return archive;
     }
   }
 
   @Singleton
   public static class Presenter extends ViewPresenter<PlayerView> {
+    private final Application app;
     private final Archive archive;
     private final Picasso picasso;
     private final ActionBarOwner actionBarOwner;
 
-    @Inject public Presenter(ActionBarOwner actionBarOwner, Archive archive, Picasso picasso) {
+    @Inject public Presenter(Application app, ActionBarOwner actionBarOwner, Archive archive,
+        Picasso picasso) {
+      this.app = app;
       this.actionBarOwner = actionBarOwner;
       this.archive = archive;
       this.picasso = picasso;
@@ -64,11 +69,12 @@ public class PlayerScreen implements HasParent<ShowDetailScreen>, Blueprint {
 
     @Override protected void onLoad(Bundle savedInstanceState) {
       super.onLoad(savedInstanceState);
+      SimpleMusicPlayerService.startService(app, archive);
 
+      // TODO remove string
       actionBarOwner.setConfig(new ActionBarOwner.Config(true, true, false, "Music Player"));
 
-      final PlayerView view = getView();
-      view.bindTo(picasso, archive);
+      getView().bindTo(picasso, archive);
     }
   }
 }

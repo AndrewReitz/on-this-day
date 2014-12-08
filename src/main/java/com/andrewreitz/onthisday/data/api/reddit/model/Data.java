@@ -1,30 +1,26 @@
 package com.andrewreitz.onthisday.data.api.reddit.model;
 
 import com.google.gson.annotations.SerializedName;
-import shillelagh.Field;
+import shillelagh.Column;
 import shillelagh.Id;
-import shillelagh.OrmOnly;
 import shillelagh.Table;
 
 @Table
 public final class Data {
   @Id long _id;
-  @Field String domain;
-  @Field String selftext;
-  @Field String id;
-  @Field String thumbnail;
-  @Field String permalink;
-  @Field String name;
-  @Field float created;
-  @Field String url;
-  @Field String title;
+  @Column String domain;
+  @Column String selftext;
+  @Column String id;
+  @Column String thumbnail;
+  @Column String permalink;
+  @Column String name;
+  @Column float created;
+  @Column String url;
+  @Column String title;
 
-  @SerializedName("num_comments") @Field int numComments;
+  @SerializedName("num_comments") @Column int numComments;
 
-  @SerializedName("created_utc") @Field float createdUtc;
-
-  @OrmOnly Data() {
-  }
+  @SerializedName("created_utc") @Column float createdUtc;
 
   public String getDomain() {
     return domain;

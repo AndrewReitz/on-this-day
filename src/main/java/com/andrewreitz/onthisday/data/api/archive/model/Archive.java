@@ -1,12 +1,13 @@
 package com.andrewreitz.onthisday.data.api.archive.model;
 
+import android.net.Uri;
+import java.io.Serializable;
 import java.util.Map;
-import java.util.Set;
 import rx.Observable;
 
 import static java.util.Map.Entry;
 
-public final class Archive {
+public final class Archive implements Serializable {
   private final String server;
   private final String dir;
   private final Metadata metadata;
@@ -20,6 +21,13 @@ public final class Archive {
     this.metadata = metadata;
     this.files = files;
     this.misc = misc;
+  }
+
+  public Uri getArchiveUrl() {
+    return new Uri.Builder().scheme("http")
+        .encodedAuthority(server)
+        .encodedPath(dir)
+        .build();
   }
 
   public String getServer() {

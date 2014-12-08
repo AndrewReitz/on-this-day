@@ -9,16 +9,16 @@
 
     <TextView
         android:id="@+id/nav_drawer_home"
-        style="@style/Widget.MagicLifeCounter.NavDrawer.Text"
+        style="@style/Widget.OnThisDay.NavDrawer.Text"
         android:text="@string/home"/>
 
     <TextView
         android:id="@+id/nav_drawer_stared"
-        style="@style/Widget.MagicLifeCounter.NavDrawer.Text"
+        style="@style/Widget.OnThisDay.NavDrawer.Text"
         android:text="@string/starred"/>
 
     <TextView
         android:id="@+id/nav_drawer_settings"
-        style="@style/Widget.MagicLifeCounter.NavDrawer.Text"
+        style="@style/Widget.OnThisDay.NavDrawer.Text"
         android:text="@string/settings"/>
 </LinearLayout>

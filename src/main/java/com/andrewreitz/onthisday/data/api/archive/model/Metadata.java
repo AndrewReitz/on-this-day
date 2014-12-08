@@ -1,8 +1,9 @@
 package com.andrewreitz.onthisday.data.api.archive.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Metadata {
+public class Metadata implements Serializable {
   private final List<String> title;
   private final List<String> creator;
   private final List<String> description;
