@@ -15,15 +15,12 @@ import com.andrewreitz.onthisday.mediaplayer.event.PlayEvent;
 import com.andrewreitz.onthisday.mediaplayer.event.PlayStateEvent;
 import com.andrewreitz.onthisday.mediaplayer.event.PreviousEvent;
 import com.andrewreitz.onthisday.mediaplayer.event.TitleChangeEvent;
-import com.andrewreitz.onthisday.ui.screen.PlayerScreen;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
 import javax.inject.Inject;
-import mortar.Mortar;
 
 public class PlayerView extends LinearLayout {
-  @Inject PlayerScreen.Presenter presenter;
   @Inject Bus bus;
 
   @InjectView(R.id.player_play_pause) ImageButton playPauseButton;
@@ -33,20 +30,17 @@ public class PlayerView extends LinearLayout {
 
   public PlayerView(Context context, AttributeSet attrs) {
     super(context, attrs);
-    Mortar.inject(context, this);
   }
 
   @Override protected void onFinishInflate() {
     super.onFinishInflate();
     ButterKnife.inject(this);
     bus.register(this);
-    presenter.takeView(this);
   }
 
   @Override protected void onDetachedFromWindow() {
     super.onDetachedFromWindow();
     bus.unregister(this);
-    presenter.dropView(this);
   }
 
   @OnClick(R.id.player_play_previous) void onPreviousPressed() {

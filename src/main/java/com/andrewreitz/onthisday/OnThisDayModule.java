@@ -4,8 +4,8 @@ import android.app.Application;
 
 import com.andrewreitz.onthisday.data.DataModule;
 import com.andrewreitz.onthisday.mediaplayer.SimpleMusicPlayerModule;
+import com.andrewreitz.onthisday.ui.MainActivity;
 import com.andrewreitz.onthisday.ui.UiModule;
-import com.andrewreitz.onthisday.ui.flow.GsonParcer;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -14,18 +14,18 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import flow.Parcer;
 
 @Module(
     includes = {
-        UiModule.class,
-        DataModule.class,
-        SimpleMusicPlayerModule.class
+        UiModule.class, //
+        DataModule.class, //
+        SimpleMusicPlayerModule.class, //
     },
     injects = {
-        OnThisDayApp.class
+        OnThisDayApp.class, //
+        MainActivity.class, //
     },
-    library = true
+    library = true //
 )
 public final class OnThisDayModule {
   private final OnThisDayApp app;
@@ -36,10 +36,6 @@ public final class OnThisDayModule {
 
   @Provides @Singleton Application provideApplication() {
     return app;
-  }
-
-  @Provides @Singleton Parcer<Object> provideParcer(Gson gson) {
-    return new GsonParcer<>(gson);
   }
 
   @Provides @Singleton Gson provideGson() {

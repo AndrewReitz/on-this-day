@@ -19,29 +19,31 @@ public class M3uWriter {
     this.outputDir = outputDir;
   }
 
-  public Observable<File> createM3uFile(@NonNull String playlistName, List<String> files)
-      throws IOException {
-    return Observable.create((Subscriber<? super File> subscriber) -> {
-      try {
-        final File m3uFile =
-            new File(outputDir, String.format("%s_%s.%s", PREFIX, playlistName, EXTENSION));
-        final FileWriter fileWriter = new FileWriter(m3uFile);
-        final PrintWriter printWriter = new PrintWriter(fileWriter);
+  public Observable<File> createM3uFile(@NonNull final String playlistName,
+      final List<String> files) throws IOException {
+    return Observable.create(new Observable.OnSubscribe<File>() {
+      @Override public void call(Subscriber<? super File> subscriber) {
+        try {
+          final File m3uFile =
+              new File(outputDir, String.format("%s_%s.%s", PREFIX, playlistName, EXTENSION));
+          final FileWriter fileWriter = new FileWriter(m3uFile);
+          final PrintWriter printWriter = new PrintWriter(fileWriter);
 
-        for (String file : files) {
-          printWriter.println(file);
-        }
+          for (String file : files) {
+            printWriter.println(file);
+          }
 
-        printWriter.flush();
-        printWriter.close();
+          printWriter.flush();
+          printWriter.close();
 
-        if (!subscriber.isUnsubscribed()) {
-          subscriber.onNext(m3uFile);
-          subscriber.onCompleted();
-        }
-      } catch (IOException e) {
-        if (!subscriber.isUnsubscribed()) {
-          subscriber.onError(e);
+          if (!subscriber.isUnsubscribed()) {
+            subscriber.onNext(m3uFile);
+            subscriber.onCompleted();
+          }
+        } catch (IOException e) {
+          if (!subscriber.isUnsubscribed()) {
+            subscriber.onError(e);
+          }
         }
       }
     });

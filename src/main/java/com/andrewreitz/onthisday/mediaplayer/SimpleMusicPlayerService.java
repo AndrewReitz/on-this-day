@@ -29,10 +29,11 @@ import com.squareup.otto.Subscribe;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
-import mortar.Mortar;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action0;
+import rx.functions.Action1;
 import rx.functions.Actions;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 public class SimpleMusicPlayerService extends Service {
@@ -62,7 +63,6 @@ public class SimpleMusicPlayerService extends Service {
 
   @Override public void onCreate() {
     super.onCreate();
-    Mortar.inject(this, this);
     bus.register(this);
   }
 
@@ -81,22 +81,25 @@ public class SimpleMusicPlayerService extends Service {
 
     archive = (Archive) intent.getSerializableExtra(MUSIC_ARCHIVE);
 
-    musicPlayer.setOnCompletionListener(() -> playCurrentSelection(Actions.empty()));
+    musicPlayer.setOnCompletionListener(new Action0() {
+      @Override public void call() {
+        playCurrentSelection(Actions.empty());
+      }
+    });
 
-    archive.getFiles().filter(
-        entry -> entry.getValue().getFormat().equals("VBR MP3")) // TODO Make enum
-        .toList().subscribe(files::addAll);
+    archive.getFiles().filter(new Func1<Map.Entry<String, FileData>, Boolean>() {
+      @Override public Boolean call(Map.Entry<String, FileData> entry) {
+        return entry.getValue().getFormat().equals("VBR MP3"); // TODO Make enum
+      }
+    }).toList().subscribe(new Action1<List<Map.Entry<String, FileData>>>() {
+      @Override public void call(List<Map.Entry<String, FileData>> entries) {
+        files.addAll(entries);
+      }
+    });
 
     playCurrentSelection(Actions.empty());
 
     return START_STICKY;
-  }
-
-  @Override public Object getSystemService(String name) {
-    if (Mortar.isScopeSystemService(name)) {
-      return OnThisDayApp.get(this).getRootScope();
-    }
-    return super.getSystemService(name);
   }
 
   @Override public IBinder onBind(Intent intent) {
@@ -137,10 +140,12 @@ public class SimpleMusicPlayerService extends Service {
   }
 
   private void newPlayEvent() {
-    playCurrentSelection(() -> {
-      musicPlayer.play();
-      bus.post(getTitleChangeEvent());
-      bus.post(new PlayStateEvent(true));
+    playCurrentSelection(new Action0() {
+      @Override public void call() {
+        musicPlayer.play();
+        bus.post(getTitleChangeEvent());
+        bus.post(new PlayStateEvent(true));
+      }
     });
   }
 
@@ -156,10 +161,11 @@ public class SimpleMusicPlayerService extends Service {
   private void playCurrentSelection(Action0 action) {
     final Optional<Uri> url = getNextUrl();
     if (url.isPresent()) {
+      Action1<Throwable> errorAction = Actions.empty();
       musicPlayer.playFile(url.get())
           .subscribeOn(Schedulers.computation())
           .observeOn(AndroidSchedulers.mainThread())
-          .subscribe(Actions.empty(), Actions.empty(), action);
+          .subscribe(Actions.empty(), errorAction, action);
     } else {
       // No more songs to play shut down
       this.stopSelf();

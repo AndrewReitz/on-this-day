@@ -25,8 +25,7 @@ import timber.log.Timber;
 
 @Module(
     complete = false,
-    library = true
-)
+    library = true)
 public final class DataModule {
   @Provides @Singleton SharedPreferences provideSharedPreferences(Application app) {
     return PreferenceManager.getDefaultSharedPreferences(app);
@@ -39,8 +38,11 @@ public final class DataModule {
 
   @Provides @Singleton Picasso providePicasso(Application app) {
     return new Picasso.Builder(app) //
-        .listener((picasso, uri, e) -> Timber.e(e, "Failed to load image: %s", uri)) //
-        .build();
+        .listener(new Picasso.Listener() {
+          @Override public void onImageLoadFailed(Picasso picasso, Uri uri, Exception e) {
+            Timber.e(e, "Failed to load image: %s", uri);
+          }
+        }).build();
   }
 
   @Provides @Singleton @Reddit RestAdapter provideRedditRestAdapter() {

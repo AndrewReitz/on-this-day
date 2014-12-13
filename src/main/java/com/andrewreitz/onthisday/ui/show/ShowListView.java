@@ -8,18 +8,26 @@ import butterknife.InjectView;
 import butterknife.OnItemClick;
 import com.andrewreitz.onthisday.R;
 import com.andrewreitz.onthisday.data.api.reddit.model.Data;
-import com.andrewreitz.onthisday.ui.screen.ShowListPresenter;
 import com.andrewreitz.velcro.betterviewanimator.BetterViewAnimator;
 import com.andrewreitz.velcro.infinitescroll.InfiniteScrollListener;
-import javax.inject.Inject;
-import mortar.Mortar;
+import hugo.weaving.DebugLog;
+import java.util.List;
+import rx.Observer;
+import rx.Subscription;
 import rx.functions.Action2;
 
-public class ShowListView extends BetterViewAnimator {
+public final class ShowListView extends BetterViewAnimator {
+  /** Loads data into this list view for infinite scrolling abilities. */
+  public interface DataLoader {
+    /** Initial load. */
+    Subscription loadData(Observer<List<Data>> observer);
+
+    /** Load more. */
+    Subscription loadMoreData(String name, int page, Observer<List<Data>> observer);
+  }
+
   /** The number of shows to pre-load in the list view */
   private static final int PRE_LOAD_SHOWS = 25;
-
-  @Inject ShowListPresenter presenter;
 
   @InjectView(R.id.music_list) ListView musicListView;
 
@@ -27,37 +35,25 @@ public class ShowListView extends BetterViewAnimator {
 
   public ShowListView(Context context, AttributeSet attrs) {
     super(context, attrs);
-    Mortar.inject(context, this);
-
     adapter = new ShowListAdapter(context);
   }
 
-  @Override protected void onFinishInflate() {
+  @DebugLog @Override protected void onFinishInflate() {
     super.onFinishInflate();
     ButterKnife.inject(this);
-    presenter.takeView(this);
     musicListView.setAdapter(adapter);
   }
 
-  @Override protected void onDetachedFromWindow() {
-    super.onDetachedFromWindow();
-    presenter.dropView(this);
+  @DebugLog @OnItemClick(R.id.music_list) void onShowClicked(int position) {
   }
 
-  @Override protected void onWindowVisibilityChanged(int visibility) {
-    super.onWindowVisibilityChanged(visibility);
-    presenter.visibilityChanged(visibility == VISIBLE);
-  }
-
-  @OnItemClick(R.id.music_list) void onShowClicked(int position) {
-    presenter.onShowSelected(adapter.getItem(position));
-  }
-
+  @DebugLog
   public ShowListAdapter getShows() {
     return adapter;
   }
 
   /** Set a listener that will continually populate the shows list */
+  @DebugLog
   public void setLoadMoreListener(final Action2<String, Integer> loadMoreListener) {
     musicListView.setOnScrollListener(new InfiniteScrollListener(PRE_LOAD_SHOWS) {
       @Override public void loadMore(int page, int totalItemsCount) {
@@ -67,6 +63,7 @@ public class ShowListView extends BetterViewAnimator {
     });
   }
 
+  @DebugLog
   public void hideSpinner() {
     setDisplayedChildId(R.id.music_list);
   }

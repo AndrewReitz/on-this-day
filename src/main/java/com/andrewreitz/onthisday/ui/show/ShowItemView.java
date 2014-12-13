@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 
 import static android.graphics.Typeface.BOLD;
 
-public class ShowItemView extends RelativeLayout {
+public final class ShowItemView extends RelativeLayout {
 
   private static final Pattern PATTERN_TO_BOLD =
       Pattern.compile("[0-9]{1,2}/[0-9]{1,2}/[0-9]{2,4}");

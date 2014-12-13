@@ -1,30 +1,39 @@
 package com.andrewreitz.onthisday;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import com.andrewreitz.onthisday.ui.ActivityHierarchyServer;
+import com.andrewreitz.onthisday.ui.show.ShowModule;
 import dagger.ObjectGraph;
 import hugo.weaving.DebugLog;
+import java.util.Collections;
+import java.util.Map;
 import javax.inject.Inject;
-import mortar.Mortar;
-import mortar.MortarScope;
+import prism.framework.GraphContext;
+import prism.framework.KernelContext;
+import prism.framework.LifecycleSubscriber;
+import prism.framework.PrismKernel;
 
-public class OnThisDayApp extends Application {
+public final class OnThisDayApp extends Application implements KernelContext, GraphContext {
 
   @Inject ActivityHierarchyServer activityHierarchyServer;
   @Inject OnThisDayInitializer initializer;
 
   private ObjectGraph objectGraph;
-  private MortarScope rootScope;
+  private PrismKernel kernel;
 
   @Override
   public void onCreate() {
     super.onCreate();
-    buildObjectGraphAndInject();
-    registerActivityLifecycleCallbacks(activityHierarchyServer);
-    initializer.init();
 
-    rootScope = Mortar.createRootScope(BuildConfig.DEBUG, objectGraph);
+    buildObjectGraphAndInject();
+
+    initializer.init();
+    kernel = new PrismKernel(this);
+
+    registerActivityLifecycleCallbacks(activityHierarchyServer);
+    registerActivityLifecycleCallbacks(new LifecycleSubscriber(this));
   }
 
   @DebugLog
@@ -33,11 +42,25 @@ public class OnThisDayApp extends Application {
     objectGraph.inject(this);
   }
 
-  public MortarScope getRootScope() {
-    return rootScope;
-  }
-
   public static OnThisDayApp get(Context context) {
     return (OnThisDayApp) context.getApplicationContext();
+  }
+
+  @Override public PrismKernel getKernel() {
+    return kernel;
+  }
+
+  @Override public Object[] getActivityModules(Activity activity) {
+    return new Object[] {
+        ShowModule.class,
+    };
+  }
+
+  @Override public ObjectGraph getApplicationGraph() {
+    return objectGraph;
+  }
+
+  @Override public Map<Class, Object> getScopeModules(Activity activity) {
+    return Collections.emptyMap();
   }
 }

@@ -22,24 +22,30 @@ public class SimpleMusicPlayer {
   }
 
   void setOnCompletionListener(final Action0 action) {
-    mediaPlayer.setOnCompletionListener(mp -> action.call());
+    mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+      @Override public void onCompletion(MediaPlayer mp) {
+        action.call();
+      }
+    });
   }
 
   Observable<Void> playFile(final Uri filePath) {
-    return Observable.create((Subscriber<? super Void> subscriber) -> {
-      try {
-        mediaPlayer.reset();
-        mediaPlayer.setDataSource(filePath.toString());
-        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        mediaPlayer.prepare();
-      } catch (IOException e) {
-        if (!subscriber.isUnsubscribed()) {
-          subscriber.onError(e);
+    return Observable.create(new Observable.OnSubscribe<Void>() {
+      @Override public void call(Subscriber<? super Void> subscriber) {
+        try {
+          mediaPlayer.reset();
+          mediaPlayer.setDataSource(filePath.toString());
+          mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+          mediaPlayer.prepare();
+        } catch (IOException e) {
+          if (!subscriber.isUnsubscribed()) {
+            subscriber.onError(e);
+          }
         }
-      }
 
-      if (!subscriber.isUnsubscribed()) {
-        subscriber.onCompleted();
+        if (!subscriber.isUnsubscribed()) {
+          subscriber.onCompleted();
+        }
       }
     });
   }
