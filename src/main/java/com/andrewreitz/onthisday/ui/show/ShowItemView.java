@@ -3,6 +3,7 @@ package com.andrewreitz.onthisday.ui.show;
 import android.content.Context;
 import android.text.style.StyleSpan;
 import android.util.AttributeSet;
+import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import butterknife.ButterKnife;
@@ -15,7 +16,7 @@ import java.util.regex.Pattern;
 
 import static android.graphics.Typeface.BOLD;
 
-public final class ShowItemView extends RelativeLayout {
+public final class ShowItemView extends FrameLayout {
 
   private static final Pattern PATTERN_TO_BOLD =
       Pattern.compile("[0-9]{1,2}/[0-9]{1,2}/[0-9]{2,4}");

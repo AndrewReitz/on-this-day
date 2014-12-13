@@ -6,13 +6,26 @@
     android:layout_height="match_parent"
     >
 
-  <!-- Main Content -->
-  <FrameLayout
-      android:id="@+id/container"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      tools:context=".MainActivity"
-      />
+  <LinearLayout
+      android:orientation="vertical"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content">
+    <!-- Tool Bar -->
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimaryDark"
+        />
+
+    <!-- Main Content -->
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity"
+        />
+  </LinearLayout>
 
   <!-- Navigation Drawer -->
   <FrameLayout

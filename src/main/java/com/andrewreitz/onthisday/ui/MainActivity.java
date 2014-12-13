@@ -1,11 +1,12 @@
 package com.andrewreitz.onthisday.ui;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -29,13 +30,14 @@ import javax.inject.Inject;
 import static android.widget.Toast.LENGTH_LONG;
 import static butterknife.ButterKnife.findById;
 
-public final class MainActivity extends Activity {
+public final class MainActivity extends ActionBarActivity {
   @Inject AppContainer appContainer;
   @Inject @SeenNavDrawer BooleanPreference seenNavDrawer;
   @Inject Bus bus;
 
   @InjectView(R.id.container) View mainView;
   @InjectView(R.id.nav_drawer_layout) DrawerLayout drawerLayout;
+  @InjectView(R.id.toolbar) Toolbar toolbar;
 
   private ActionBarDrawerToggle drawerToggle;
 
@@ -65,6 +67,7 @@ public final class MainActivity extends Activity {
     LayoutInflater.from(this).inflate(R.layout.drawer_navigation, leftDrawer);
     ButterKnife.inject(this);
 
+    setSupportActionBar(toolbar);
     setupNavigationDrawer();
 
     getFragmentManager().beginTransaction()
@@ -101,31 +104,34 @@ public final class MainActivity extends Activity {
   }
 
   private void setupNavigationDrawer() {
-    final ActionBar actionBar = getActionBar();
+    final ActionBar actionBar = getSupportActionBar();
 
-    drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_drawer,
-        R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
+    drawerToggle =
+        new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close) {
 
-      /** Called when a drawer has settled in a completely closed state. */
-      public void onDrawerClosed(View view) {
-        super.onDrawerClosed(view);
-        //noinspection ConstantConditions
-        actionBar.setTitle(getString(R.string.app_name)); // TODO
-        invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-      }
+          /** Called when a drawer has settled in a completely closed state. */
+          public void onDrawerClosed(View view) {
+            super.onDrawerClosed(view);
+            //noinspection ConstantConditions
+            actionBar.setTitle(getString(R.string.app_name)); // TODO
+            invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+          }
 
-      /** Called when a drawer has settled in a completely open state. */
-      public void onDrawerOpened(View drawerView) {
-        super.onDrawerOpened(drawerView);
-        //noinspection ConstantConditions
-        actionBar.setTitle(getString(R.string.app_name));
-        invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-      }
-    };
+          /** Called when a drawer has settled in a completely open state. */
+          public void onDrawerOpened(View drawerView) {
+            super.onDrawerOpened(drawerView);
+            //noinspection ConstantConditions
+            actionBar.setTitle(getString(R.string.app_name));
+            invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+          }
+        };
 
     drawerLayout.setDrawerListener(drawerToggle);
     drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, Gravity.START);
 
+    actionBar.setDisplayHomeAsUpEnabled(true);
+    actionBar.setHomeButtonEnabled(true);
     drawerToggle.setDrawerIndicatorEnabled(true);
     drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
 
