@@ -14,7 +14,7 @@ public final class Strings {
     return (string == null || string.toString().trim().length() == 0);
   }
 
-  /** Checks if a string there, if not returns the default string */
+  /** Checks if a string is there, if not returns the default string */
   public static String valueOrDefault(String string, String defaultString) {
     return isBlank(string) ? defaultString : string;
   }
@@ -37,7 +37,15 @@ public final class Strings {
     }
   }
 
-  public static <T> String join(List<T> list) {
+  /**
+   * Converts a list of values to a comma separated string. This calls toString on each value
+   * inside
+   * of the list.
+   *
+   * @param list A list to create the CSV from.
+   * @return A string of comma separated values
+   */
+  public static <T> String toCsv(List<T> list) {
     StringBuilder sb = new StringBuilder();
     final Iterator<T> iterator = list.iterator();
 
