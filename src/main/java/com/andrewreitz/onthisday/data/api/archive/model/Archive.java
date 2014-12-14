@@ -1,6 +1,7 @@
 package com.andrewreitz.onthisday.data.api.archive.model;
 
 import android.net.Uri;
+import com.google.common.collect.Maps;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.Map;
@@ -20,8 +21,8 @@ public final class Archive implements Serializable {
     this.server = server;
     this.dir = dir;
     this.metadata = metadata;
-    this.files = files;
-    this.misc = misc;
+    this.files = Collections.unmodifiableMap(files);
+    this.misc = Collections.unmodifiableMap(misc);
   }
 
   public Uri getArchiveUrl() {
@@ -45,7 +46,7 @@ public final class Archive implements Serializable {
   }
 
   public Map<String, FileData> getFileMap() {
-    return Collections.unmodifiableMap(files);
+    return Maps.newLinkedHashMap(files);
   }
 
   public Observable<FileData> getFileData() {
@@ -57,7 +58,7 @@ public final class Archive implements Serializable {
   }
 
   public Map<String, String> getMisc() {
-    return Collections.unmodifiableMap(misc);
+    return Maps.newLinkedHashMap(misc);
   }
 
   @Override public boolean equals(Object o) {

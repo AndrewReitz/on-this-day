@@ -1,5 +1,6 @@
 package com.andrewreitz.onthisday.data.api.archive.model;
 
+import com.google.common.collect.Lists;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
@@ -24,76 +25,76 @@ public class Metadata implements Serializable {
       List<String> date, List<String> year, List<String> subject, List<String> venue,
       List<String> coverage, List<String> transferer, List<String> runtime, List<String> notes,
       List<String> updatedate, List<String> updater, List<String> publicdate) {
-    this.title = title;
-    this.creator = creator;
-    this.description = description;
-    this.date = date;
-    this.year = year;
-    this.subject = subject;
-    this.venue = venue;
-    this.coverage = coverage;
-    this.transferer = transferer;
-    this.runtime = runtime;
-    this.notes = notes;
-    this.updatedate = updatedate;
-    this.updater = updater;
-    this.publicdate = publicdate;
+    this.title = Collections.unmodifiableList(title);
+    this.creator = Collections.unmodifiableList(creator);
+    this.description = Collections.unmodifiableList(description);
+    this.date = Collections.unmodifiableList(date);
+    this.year = Collections.unmodifiableList(year);
+    this.subject = Collections.unmodifiableList(subject);
+    this.venue = Collections.unmodifiableList(venue);
+    this.coverage = Collections.unmodifiableList(coverage);
+    this.transferer = Collections.unmodifiableList(transferer);
+    this.runtime = Collections.unmodifiableList(runtime);
+    this.notes = Collections.unmodifiableList(notes);
+    this.updatedate = Collections.unmodifiableList(updatedate);
+    this.updater = Collections.unmodifiableList(updater);
+    this.publicdate = Collections.unmodifiableList(publicdate);
   }
 
   public List<String> getTitle() {
-    return Collections.unmodifiableList(title);
+    return Lists.newArrayList(title);
   }
 
   public List<String> getCreator() {
-    return Collections.unmodifiableList(creator);
+    return Lists.newArrayList(creator);
   }
 
   public List<String> getDescription() {
-    return Collections.unmodifiableList(description);
+    return Lists.newArrayList(description);
   }
 
   public List<String> getDate() {
-    return Collections.unmodifiableList(date);
+    return Lists.newArrayList(date);
   }
 
   public List<String> getYear() {
-    return Collections.unmodifiableList(year);
+    return Lists.newArrayList(year);
   }
 
   public List<String> getSubject() {
-    return Collections.unmodifiableList(subject);
+    return Lists.newArrayList(subject);
   }
 
   public List<String> getVenue() {
-    return Collections.unmodifiableList(venue);
+    return Lists.newArrayList(venue);
   }
 
   public List<String> getCoverage() {
-    return Collections.unmodifiableList(coverage);
+    return Lists.newArrayList(coverage);
   }
 
   public List<String> getTransferer() {
-    return Collections.unmodifiableList(transferer);
+    return Lists.newArrayList(transferer);
   }
 
   public List<String> getRuntime() {
-    return Collections.unmodifiableList(runtime);
+    return Lists.newArrayList(runtime);
   }
 
   public List<String> getNotes() {
-    return Collections.unmodifiableList(notes);
+    return Lists.newArrayList(notes);
   }
 
   public List<String> getUpdatedate() {
-    return Collections.unmodifiableList(updatedate);
+    return Lists.newArrayList(updatedate);
   }
 
   public List<String> getUpdater() {
-    return Collections.unmodifiableList(updater);
+    return Lists.newArrayList(updater);
   }
 
   public List<String> getPublicdate() {
-    return Collections.unmodifiableList(publicdate);
+    return Lists.newArrayList(publicdate);
   }
 
   @Override public boolean equals(Object o) {
