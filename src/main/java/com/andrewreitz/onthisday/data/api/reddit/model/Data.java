@@ -66,8 +66,7 @@ public final class Data {
     return createdUtc;
   }
 
-  @Override
-  public boolean equals(Object o) {
+  @Override public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
 
@@ -92,8 +91,7 @@ public final class Data {
     return true;
   }
 
-  @Override
-  public int hashCode() {
+  @Override public int hashCode() {
     int result = domain != null ? domain.hashCode() : 0;
     result = 31 * result + (selftext != null ? selftext.hashCode() : 0);
     result = 31 * result + (id != null ? id.hashCode() : 0);
