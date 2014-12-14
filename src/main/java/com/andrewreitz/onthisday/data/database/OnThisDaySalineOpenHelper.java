@@ -20,6 +20,6 @@ public class OnThisDaySalineOpenHelper extends SQLiteOpenHelper {
   }
 
   @Override public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-    throw new UnsupportedOperationException("Not Implmented");
+    throw new UnsupportedOperationException("Not Implemented");
   }
 }
