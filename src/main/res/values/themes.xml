@@ -3,10 +3,18 @@
     <!-- Place your theme settings here! -->
   </style>
 
-  <style name="AppTheme.Base" parent="Theme.AppCompat">
-    <item name="colorPrimary">@color/colorPrimary</item>
-    <item name="colorPrimaryDark">@color/colorPrimary</item>
+  <style name="AppTheme.Base" parent="Theme.AppCompat.Light">
     <item name="android:windowNoTitle">true</item>
     <item name="windowActionBar">false</item>
+
+    <item name="colorPrimary">@color/primaryColor</item>
+    <item name="colorPrimaryDark">@color/darkColorPrimary</item>
+    <item name="colorAccent">@color/accentColor</item>
+    <!--<item name="android:textColorPrimary">@color/primaryText</item>-->
+    <!--<item name="android:textColorSecondary">@color/secondaryText</item>-->
+    <!--<item name="colorControlNormal">@color/textColor</item>-->
+    <!--<item name="colorControlActivated">#00ffff</item>-->
+    <!--<item name="colorControlHighlight">#ffff00</item>-->
+    <!--<item name="colorButtonNormal">#ff0fff</item>-->
   </style>
 </resources>

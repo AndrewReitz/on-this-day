@@ -1,5 +1,6 @@
 package com.andrewreitz.onthisday.data.api.reddit.model;
 
+import com.google.common.collect.Lists;
 import java.util.Collections;
 import java.util.List;
 
@@ -11,7 +12,7 @@ public final class Listing {
 
   public Listing(String modhash, List<Child> children, String after, String before) {
     this.modhash = modhash;
-    this.children = children;
+    this.children = Collections.unmodifiableList(children);
     this.after = after;
     this.before = before;
   }
@@ -21,7 +22,7 @@ public final class Listing {
   }
 
   public List<Child> getChildren() {
-    return Collections.unmodifiableList(children);
+    return Lists.newArrayList(children);
   }
 
   public String getAfter() {

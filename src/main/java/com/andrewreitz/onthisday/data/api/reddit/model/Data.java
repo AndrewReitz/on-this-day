@@ -50,6 +50,7 @@ public final class Data {
     return created;
   }
 
+  /** Url of the data source or reddit. In our case we want archive.org. */
   public String getUrl() {
     return url;
   }

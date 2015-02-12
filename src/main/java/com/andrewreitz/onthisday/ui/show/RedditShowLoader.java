@@ -16,7 +16,7 @@ import timber.log.Timber;
 
 /** Loads shows from reddit. */
 @Singleton
-final class RedditShowLoader implements ShowListView.DataLoader {
+final class RedditShowLoader {
   private final OnThisDayRedditRepository onThisDayRedditRepository;
 
   @Inject RedditShowLoader(OnThisDayRedditRepository onThisDayRedditRepository) {
@@ -24,7 +24,7 @@ final class RedditShowLoader implements ShowListView.DataLoader {
   }
 
   @DebugLog
-  @Override public Subscription loadData(final Observer<List<Data>> observer) {
+  public Subscription loadData(final Observer<List<Data>> observer) {
     return onThisDayRedditRepository.loadReddit() //
         .toList() //
         .subscribeOn(Schedulers.io()) //
@@ -32,7 +32,7 @@ final class RedditShowLoader implements ShowListView.DataLoader {
         .subscribe(observer);
   }
 
-  @Override public Subscription loadMoreData(String name, int page, Observer<List<Data>> observer) {
+  public Subscription loadMoreData(String name, int page, Observer<List<Data>> observer) {
     return onThisDayRedditRepository.loadReddit(name,
         page * OnThisDayRedditRepository.COUNT_INCREMENT) //
         .toList() //

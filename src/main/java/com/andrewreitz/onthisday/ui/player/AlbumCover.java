@@ -27,7 +27,7 @@ public class AlbumCover extends FrameLayout {
   }
 
   public void bindTo(Picasso picasso, Archive archive) {
-    albumTitle.setText(Strings.join(archive.getMetadata().getTitle()));
+    albumTitle.setText(Strings.toCsv(archive.getMetadata().getTitle()));
 
     String imageUrl = archive.getMisc().get("image");
     if (imageUrl != null) {

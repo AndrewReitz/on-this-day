@@ -10,14 +10,14 @@ import rx.subscriptions.Subscriptions;
 import shillelagh.Shillelagh;
 
 /** Loader for items that have been stared. */
-final class StarredLoader implements ShowListView.DataLoader {
+final class StarredLoader {
   private Shillelagh shillelagh;
 
   StarredLoader(Shillelagh shillelagh) {
     this.shillelagh = shillelagh;
   }
 
-  @Override public Subscription loadData(Observer<List<Data>> observer) {
+  public Subscription loadData(Observer<List<Data>> observer) {
     return shillelagh.get(Data.class)
         .buffer(10)
         .subscribeOn(Schedulers.io())
@@ -25,7 +25,7 @@ final class StarredLoader implements ShowListView.DataLoader {
         .subscribe(observer);
   }
 
-  @Override public Subscription loadMoreData(String name, int page, Observer<List<Data>> observer) {
+  public Subscription loadMoreData(String name, int page, Observer<List<Data>> observer) {
     return Subscriptions.empty();
   }
 }

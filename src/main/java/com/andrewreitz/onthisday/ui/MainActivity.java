@@ -21,9 +21,11 @@ import com.andrewreitz.onthisday.OnThisDayApp;
 import com.andrewreitz.onthisday.R;
 import com.andrewreitz.onthisday.data.SeenNavDrawer;
 import com.andrewreitz.onthisday.mediaplayer.event.StopServiceEvent;
+import com.andrewreitz.onthisday.ui.common.bus.ToolBarTitleEvent;
 import com.andrewreitz.onthisday.ui.show.ShowListFragment;
 import com.inkapplications.preferences.BooleanPreference;
 import com.squareup.otto.Bus;
+import com.squareup.otto.Subscribe;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 
@@ -75,6 +77,16 @@ public final class MainActivity extends ActionBarActivity {
         .commit();
   }
 
+  @Override protected void onResume() {
+    super.onResume();
+    bus.register(this);
+  }
+
+  @Override protected void onPause() {
+    super.onPause();
+    bus.unregister(this);
+  }
+
   @Override public boolean onOptionsItemSelected(MenuItem item) {
     // Pass the event to ActionBarDrawerToggle, if it returns
     // true, then it has handled the app icon touch event
@@ -83,11 +95,6 @@ public final class MainActivity extends ActionBarActivity {
 
   @Override public boolean onCreateOptionsMenu(Menu menu) {
     return true;
-  }
-
-  @Override protected void onDestroy() {
-    super.onDestroy();
-    bus.post(new StopServiceEvent());
   }
 
   @Override
@@ -101,6 +108,11 @@ public final class MainActivity extends ActionBarActivity {
   public void onConfigurationChanged(Configuration newConfig) {
     super.onConfigurationChanged(newConfig);
     drawerToggle.onConfigurationChanged(newConfig);
+  }
+
+  @Subscribe
+  public void onTitleBarEvent(ToolBarTitleEvent event) {
+    toolbar.setTitle(event.title);
   }
 
   private void setupNavigationDrawer() {

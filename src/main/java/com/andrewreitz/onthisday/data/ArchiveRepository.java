@@ -13,6 +13,8 @@ import rx.subjects.PublishSubject;
 import rx.subscriptions.Subscriptions;
 
 public class ArchiveRepository {
+  private static final String ARCHIVE_URL = "https://archive.org";
+
   private final ArchiveService archiveService;
 
   private final Map<String, Archive> cache = Maps.newLinkedHashMap();
@@ -22,7 +24,12 @@ public class ArchiveRepository {
     this.archiveService = archiveService;
   }
 
-  public Subscription loadShow(final String showUrl, final Observer<Archive> observer) {
+  public Subscription loadShow(String showUrl, final Observer<Archive> observer) {
+    // Service is already prepended with archive.org
+    if (showUrl.contains(ARCHIVE_URL)) {
+      showUrl = showUrl.replace(ARCHIVE_URL, "");
+    }
+
     Archive item = cache.get(showUrl);
     if (item != null) {
       // We have a cached value. Emit it immediately.
@@ -42,13 +49,14 @@ public class ArchiveRepository {
 
     Subscription subscription = request.subscribe(observer);
 
+    final String showUrlHolder = showUrl;
     request.subscribe(new EndObserver<Archive>() {
       @Override public void onEnd() {
-        requests.remove(showUrl);
+        requests.remove(showUrlHolder);
       }
 
       @Override public void onNext(Archive item) {
-        cache.put(showUrl, item);
+        cache.put(showUrlHolder, item);
       }
     });
 

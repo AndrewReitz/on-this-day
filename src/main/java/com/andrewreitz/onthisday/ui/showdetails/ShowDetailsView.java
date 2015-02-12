@@ -26,10 +26,10 @@ public class ShowDetailsView extends BetterViewAnimator {
 
   public void bindTo(Archive show) {
     final Metadata metadata = show.getMetadata();
-    title.setText(Strings.join(metadata.getTitle()));
-    date.setText(Strings.join(metadata.getDate()));
-    venueAndLocation.setText(String.format("%s, %s", Strings.join(metadata.getVenue()),
-        Strings.join(metadata.getCoverage())));
+    title.setText(Strings.toCsv(metadata.getTitle()));
+    date.setText(Strings.toCsv(metadata.getDate()));
+    venueAndLocation.setText(String.format("%s, %s", Strings.toCsv(metadata.getVenue()),
+        Strings.toCsv(metadata.getCoverage())));
 
     show.getFileData().filter(new Func1<FileData, Boolean>() {
       @Override public Boolean call(FileData fileData) {
@@ -41,7 +41,7 @@ public class ShowDetailsView extends BetterViewAnimator {
       }
     }).subscribe(new Action1<FileData>() {
       @Override public void call(FileData fileData) {
-        final TrackView trackView = new TrackView(getContext());
+        TrackView trackView = new TrackView(getContext());
         trackView.bindTo(fileData);
         content.addView(trackView);
       }

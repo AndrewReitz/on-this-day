@@ -28,13 +28,13 @@ repositories {
 }
 
 dependencies {
-  compile 'com.android.support:support-v4:21.0.2'
-  compile 'com.android.support:appcompat-v7:21.0.2'
-  compile 'com.android.support:cardview-v7:21.0.2'
-  compile 'com.android.support:support-annotations:21.0.2'
+  compile 'com.android.support:support-v4:21.0.3'
+  compile 'com.android.support:appcompat-v7:21.0.3'
+  compile 'com.android.support:cardview-v7:21.0.3'
+  compile 'com.android.support:support-annotations:21.0.3'
 
   compile 'com.inkapplications:android-preferences:1.1.0'
-  compile 'com.inkapplications:prism:0.0.0-SNAPSHOT'
+  compile 'com.inkapplications:prism:0.0.1'
 
   compile 'com.jakewharton.timber:timber:2.5.0'
   compile 'com.jakewharton:butterknife:6.0.0'
@@ -75,7 +75,7 @@ def buildTime = new Date().format("yyyy-MM-dd'T'HH:mm'Z'", TimeZone.getTimeZone(
 
 android {
   compileSdkVersion 21
-  buildToolsVersion "21.1.1"
+  buildToolsVersion "21.1.2"
 
   defaultConfig {
     minSdkVersion 15

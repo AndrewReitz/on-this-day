@@ -6,6 +6,7 @@
   <style name="Widget.OnThisDay.NavDrawer.Text" parent="None">
     <item name="android:gravity">center</item>
     <item name="android:textAppearance">?android:textAppearanceMedium</item>
+    <item name="android:color">@color/primaryText</item>
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:padding">@dimen/default_layout_padding_half</item>

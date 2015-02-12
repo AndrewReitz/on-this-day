@@ -46,7 +46,7 @@ public final class ShowDetailsFragment extends Fragment {
   //      .subscribe(fileName -> paths.add(filePath + fileName));
   //
   //  try {
-  //    final String title = Strings.join(archive.getMetadata().getTitle());
+  //    final String title = Strings.toCsv(archive.getMetadata().getTitle());
   //    m3uWriter.createM3uFile(title, paths).subscribe(file -> {
   //      Intent intent = new Intent();
   //      intent.setAction(Intent.ACTION_VIEW);

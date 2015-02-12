@@ -4,18 +4,22 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/show_list_view">
+    android:id="@+id/show_list_view"
+    >
 
   <ProgressBar
       android:id="@+id/music_list_progress"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_gravity="center"/>
+      android:layout_gravity="center"
+      />
 
   <ListView
       android:id="@+id/music_list"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:orientation="vertical"/>
+      android:orientation="vertical"
+      android:divider="@null"
+      />
 
 </com.andrewreitz.onthisday.ui.show.ShowListView>

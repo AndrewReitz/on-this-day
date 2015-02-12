@@ -5,19 +5,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.andrewreitz.onthisday.R;
+import com.andrewreitz.onthisday.data.RedditArchivePair;
+import com.andrewreitz.onthisday.data.api.archive.model.Archive;
 import com.andrewreitz.onthisday.data.api.reddit.model.Data;
 import com.andrewreitz.velcro.bindableadapter.BindableAdapter;
 import com.google.common.collect.Lists;
 import java.util.List;
 
-public class ShowListAdapter extends BindableAdapter<Data> {
-  private List<Data> shows = Lists.newArrayList();
+public class ShowListAdapter extends BindableAdapter<RedditArchivePair> {
+  private List<RedditArchivePair> shows = Lists.newArrayList();
 
   public ShowListAdapter(Context context) {
     super(context);
   }
 
-  public void add(List<Data> shows) {
+  public void add(List<RedditArchivePair> shows) {
     this.shows.addAll(shows);
     notifyDataSetChanged();
   }
@@ -26,7 +28,7 @@ public class ShowListAdapter extends BindableAdapter<Data> {
     return shows.size();
   }
 
-  @Override public Data getItem(int position) {
+  @Override public RedditArchivePair getItem(int position) {
     return shows.get(position);
   }
 
@@ -38,7 +40,7 @@ public class ShowListAdapter extends BindableAdapter<Data> {
     return inflater.inflate(R.layout.show_item_view, container, false);
   }
 
-  @Override public void bindView(Data item, int position, View view) {
-    ((ShowItemView) view).bindTo(item);
+  @Override public void bindView(RedditArchivePair item, int position, View view) {
+    ((ShowItemView) view).bindTo(item.getArchiveData());
   }
 }

@@ -1,24 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              style="?android:buttonBarStyle"
-              android:background="?android:colorBackground">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    style="?android:buttonBarStyle"
+    android:background="?android:colorBackground"
+    >
 
-    <TextView
-        android:id="@+id/nav_drawer_home"
-        style="@style/Widget.OnThisDay.NavDrawer.Text"
-        android:text="@string/home"/>
+  <ImageView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:src="@drawable/stealyourface"
+      android:layout_margin="@dimen/default_layout_margin_half"
+      tools:ignore="ContentDescription"
+      />
 
-    <TextView
-        android:id="@+id/nav_drawer_stared"
-        style="@style/Widget.OnThisDay.NavDrawer.Text"
-        android:text="@string/starred"/>
+  <TextView
+      android:id="@+id/nav_drawer_home"
+      style="@style/Widget.OnThisDay.NavDrawer.Text"
+      android:text="@string/home"
+      />
 
-    <TextView
-        android:id="@+id/nav_drawer_settings"
-        style="@style/Widget.OnThisDay.NavDrawer.Text"
-        android:text="@string/settings"/>
+  <TextView
+      android:id="@+id/nav_drawer_stared"
+      style="@style/Widget.OnThisDay.NavDrawer.Text"
+      android:text="@string/starred"
+      />
+
+  <TextView
+      android:id="@+id/nav_drawer_settings"
+      style="@style/Widget.OnThisDay.NavDrawer.Text"
+      android:text="@string/settings"
+      />
 </LinearLayout>

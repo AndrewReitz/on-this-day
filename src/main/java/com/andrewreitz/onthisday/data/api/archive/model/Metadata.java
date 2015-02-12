@@ -69,6 +69,7 @@ public class Metadata implements Serializable {
     return Lists.newArrayList(venue);
   }
 
+  /** Generally the location the show was at. */
   public List<String> getCoverage() {
     return Lists.newArrayList(coverage);
   }
