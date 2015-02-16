@@ -43,6 +43,69 @@
           android:background="?android:attr/listDivider"
           />
 
+      <RelativeLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          >
+
+        <ImageView
+            android:id="@+id/show_item_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/default_layout_margin_half"
+            android:layout_marginStart="@dimen/default_layout_margin_half"
+            android:src="@drawable/ic_expand_more"
+            />
+
+        <ImageView
+            android:id="@+id/show_item_play"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/show_item_more"
+            android:layout_toStartOf="@id/show_item_more"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/default_layout_margin_half"
+            android:layout_marginStart="@dimen/default_layout_margin_half"
+            android:src="@drawable/ic_play_arrow"
+            />
+
+        <ImageView
+            android:id="@+id/show_item_favorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/show_item_play"
+            android:layout_toStartOf="@id/show_item_play"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/default_layout_margin_half"
+            android:layout_marginStart="@dimen/default_layout_margin_half"
+            android:src="@drawable/ic_star"
+            />
+
+        <ImageView
+            android:id="@+id/show_item_download"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/show_item_favorite"
+            android:layout_toStartOf="@id/show_item_favorite"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/default_layout_margin_half"
+            android:layout_marginStart="@dimen/default_layout_margin_half"
+            android:src="@drawable/ic_save"
+            />
+      </RelativeLayout>
+
+      <View
+          android:layout_height="2dp"
+          android:layout_marginTop="@dimen/default_layout_padding_half"
+          android:layout_marginBottom="@dimen/default_layout_padding_half"
+          android:layout_width="fill_parent"
+          android:background="?android:attr/listDivider"
+          android:visibility="gone"
+          />
+
       <LinearLayout
           android:id="@+id/show_item_set_list"
           android:layout_width="match_parent"

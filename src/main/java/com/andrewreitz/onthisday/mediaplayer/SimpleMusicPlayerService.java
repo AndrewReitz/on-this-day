@@ -67,17 +67,17 @@ public class SimpleMusicPlayerService extends Service {
   }
 
   @Override public int onStartCommand(Intent intent, int flags, int startId) {
-    final RemoteViews notificationTemplate =
-        new RemoteViews(getPackageName(), R.layout.notification_template_base);
+    //final RemoteViews notificationTemplate =
+    //    new RemoteViews(getPackageName(), R.layout.notification_template_base);
 
-    final Notification notification = new NotificationCompat.Builder(this) //
-        .setSmallIcon(R.drawable.ic_launcher) //
-        .setContentTitle("On This Day") //
-        .setContentText("Playing Music") //
-        .setContent(notificationTemplate) //
-        .build();
+    //final Notification notification = new NotificationCompat.Builder(this) //
+    //    .setSmallIcon(R.drawable.ic_launcher) //
+    //    .setContentTitle("On This Day") //
+    //    .setContentText("Playing Music") //
+    //    .setContent(notificationTemplate) //
+    //    .build();
 
-    startForeground(ONGOING_NOTIFICATION_ID, notification);
+    //startForeground(ONGOING_NOTIFICATION_ID, notification);
 
     archive = (Archive) intent.getSerializableExtra(MUSIC_ARCHIVE);
 

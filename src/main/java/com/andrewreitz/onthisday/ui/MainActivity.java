@@ -33,6 +33,8 @@ import static android.widget.Toast.LENGTH_LONG;
 import static butterknife.ButterKnife.findById;
 
 public final class MainActivity extends ActionBarActivity {
+  private static final ShowListFragment showListFragment = new ShowListFragment();
+
   @Inject AppContainer appContainer;
   @Inject @SeenNavDrawer BooleanPreference seenNavDrawer;
   @Inject Bus bus;
@@ -73,7 +75,7 @@ public final class MainActivity extends ActionBarActivity {
     setupNavigationDrawer();
 
     getFragmentManager().beginTransaction()
-        .add(R.id.container, new ShowListFragment(), "show_list_fragment")
+        .add(R.id.container, showListFragment, "show_list_fragment")
         .commit();
   }
 
