@@ -15,6 +15,7 @@ import prism.framework.KernelContext;
 import prism.framework.LifecycleSubscriber;
 import prism.framework.PrismKernel;
 
+@DebugLog
 public final class OnThisDayApp extends Application implements KernelContext, GraphContext {
 
   @Inject ActivityHierarchyServer activityHierarchyServer;
@@ -36,7 +37,6 @@ public final class OnThisDayApp extends Application implements KernelContext, Gr
     registerActivityLifecycleCallbacks(new LifecycleSubscriber(this));
   }
 
-  @DebugLog
   public void buildObjectGraphAndInject() {
     objectGraph = ObjectGraph.create(Modules.list(this));
     objectGraph.inject(this);

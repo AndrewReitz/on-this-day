@@ -5,6 +5,7 @@ import com.andrewreitz.onthisday.data.api.archive.model.Archive;
 import com.andrewreitz.velcro.rx.EndObserver;
 import com.google.common.collect.Maps;
 import java.util.Map;
+import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -33,9 +34,8 @@ public class ArchiveRepository {
     Archive item = cache.get(showUrl);
     if (item != null) {
       // We have a cached value. Emit it immediately.
-      observer.onNext(item);
-      // Don't do another network all.
-      return Subscriptions.empty();
+      return Observable.just(item)
+          .subscribe(observer);
     }
 
     PublishSubject<Archive> request = requests.get(showUrl);

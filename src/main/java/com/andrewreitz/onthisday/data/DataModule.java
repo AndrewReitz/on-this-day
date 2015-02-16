@@ -6,19 +6,14 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.os.Environment;
 import android.preference.PreferenceManager;
-
 import com.andrewreitz.onthisday.data.api.archive.ArchiveService;
 import com.andrewreitz.onthisday.data.api.reddit.OnThisDayRedditService;
 import com.andrewreitz.onthisday.data.database.OnThisDaySalineOpenHelper;
 import com.inkapplications.preferences.BooleanPreference;
-
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
-import javax.inject.Singleton;
-
 import dagger.Module;
 import dagger.Provides;
+import javax.inject.Singleton;
 import retrofit.RestAdapter;
 import shillelagh.Shillelagh;
 import timber.log.Timber;
@@ -47,7 +42,7 @@ public final class DataModule {
 
   @Provides @Singleton @Reddit RestAdapter provideRedditRestAdapter() {
     return new RestAdapter.Builder() //
-        .setLogLevel(RestAdapter.LogLevel.FULL) // TODO
+        .setLogLevel(RestAdapter.LogLevel.BASIC) // TODO
         .setEndpoint("http://reddit.com") //
         .build();
   }
@@ -59,7 +54,7 @@ public final class DataModule {
 
   @Provides @Singleton @Archive RestAdapter provideArchiveRestAdapter() {
     return new RestAdapter.Builder() //
-        .setLogLevel(RestAdapter.LogLevel.FULL) // TODO
+        .setLogLevel(RestAdapter.LogLevel.BASIC) // TODO
         .setEndpoint("https://archive.org") //
         .build();
   }

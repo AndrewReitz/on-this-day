@@ -18,7 +18,7 @@ public final class RedditArchivePair {
    */
   public RedditArchivePair(Archive archive, Data data) {
     this.archive = checkNotNull(archive, "Archive may not be null.");
-    this.data  = checkNotNull(data, "Data may not be null.");
+    this.data = checkNotNull(data, "Data may not be null.");
   }
 
   public Archive getArchiveData() {
@@ -27,5 +27,32 @@ public final class RedditArchivePair {
 
   public Data getRedditData() {
     return data;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    RedditArchivePair that = (RedditArchivePair) o;
+
+    if (archive != null ? !archive.equals(that.archive) : that.archive != null) return false;
+    if (data != null ? !data.equals(that.data) : that.data != null) return false;
+
+    return true;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = archive != null ? archive.hashCode() : 0;
+    result = 31 * result + (data != null ? data.hashCode() : 0);
+    return result;
+  }
+
+  @Override public String toString() {
+    return "RedditArchivePair{" //
+        + "archive=" + archive //
+        + ", data=" + data //
+        + '}';
   }
 }

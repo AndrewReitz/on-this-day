@@ -13,17 +13,19 @@ import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import rx.subjects.ReplaySubject;
 import rx.subjects.Subject;
+import timber.log.Timber;
 
 /**
  * Loads shows from reddit and map them to archive.org and combine them into a single data
  * object.
  */
 @Singleton
-final class RedditToArchiveShowLoader implements ShowListFragment.DataLoader {
+final class RedditToArchiveShowLoader {
   private final OnThisDayRedditRepository onThisDayRedditRepository;
   private final ArchiveRepository archiveRepository;
 
@@ -48,16 +50,17 @@ final class RedditToArchiveShowLoader implements ShowListFragment.DataLoader {
     this.archiveRepository = archiveRepository;
   }
 
-  @DebugLog @Override public Subscription loadData(final Observer<List<RedditArchivePair>> observer) {
+  public Subscription loadData(final Observer<List<RedditArchivePair>> observer) {
     return onThisDayRedditRepository.loadReddit() //
-        .flatMap(redditToArchive).toList() //
+        .flatMap(redditToArchive) //
+        .toList() //
         .subscribeOn(Schedulers.io()) //
         .observeOn(AndroidSchedulers.mainThread()) //
         .subscribe(observer);
   }
 
-  @Override
-  public Subscription loadMoreData(String name, int page, Observer<List<RedditArchivePair>> observer) {
+  public Subscription loadMoreData(String name, int page,
+      Observer<List<RedditArchivePair>> observer) {
     return onThisDayRedditRepository.loadReddit(name,
         page * OnThisDayRedditRepository.COUNT_INCREMENT) //
         .flatMap(redditToArchive) //

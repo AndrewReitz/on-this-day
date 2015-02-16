@@ -20,18 +20,19 @@ import butterknife.OnClick;
 import com.andrewreitz.onthisday.OnThisDayApp;
 import com.andrewreitz.onthisday.R;
 import com.andrewreitz.onthisday.data.SeenNavDrawer;
-import com.andrewreitz.onthisday.mediaplayer.event.StopServiceEvent;
 import com.andrewreitz.onthisday.ui.common.bus.ToolBarTitleEvent;
 import com.andrewreitz.onthisday.ui.show.ShowListFragment;
 import com.inkapplications.preferences.BooleanPreference;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
+import hugo.weaving.DebugLog;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 
 import static android.widget.Toast.LENGTH_LONG;
 import static butterknife.ButterKnife.findById;
 
+@DebugLog
 public final class MainActivity extends ActionBarActivity {
   private static final ShowListFragment showListFragment = new ShowListFragment();
 

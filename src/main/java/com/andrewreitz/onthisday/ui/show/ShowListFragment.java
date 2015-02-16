@@ -10,6 +10,7 @@ import com.andrewreitz.onthisday.data.RedditArchivePair;
 import com.andrewreitz.onthisday.data.api.archive.model.Archive;
 import com.andrewreitz.onthisday.ui.common.bus.ToolBarTitleEvent;
 import com.squareup.otto.Bus;
+import hugo.weaving.DebugLog;
 import java.util.List;
 import javax.inject.Inject;
 import prism.framework.PrismFacade;
@@ -21,15 +22,6 @@ import rx.subscriptions.Subscriptions;
 import timber.log.Timber;
 
 public final class ShowListFragment extends Fragment {
-  /** Loads data into this list view for infinite scrolling abilities. */
-  public interface DataLoader {
-    /** Initial load. */
-    Subscription loadData(Observer<List<RedditArchivePair>> observer);
-
-    /** Load more. */
-    Subscription loadMoreData(String name, int page, Observer<List<RedditArchivePair>> observer);
-  }
-
   @Inject Bus bus;
   @Inject RedditToArchiveShowLoader dataLoader;
 
