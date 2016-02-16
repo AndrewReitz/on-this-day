@@ -4,22 +4,27 @@ import com.google.common.collect.Lists;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
+import shillelagh.Column;
+import shillelagh.Id;
+import shillelagh.Table;
 
-public class Metadata implements Serializable {
-  private final List<String> title;
-  private final List<String> creator;
-  private final List<String> description;
-  private final List<String> date;
-  private final List<String> year;
-  private final List<String> subject;
-  private final List<String> venue;
-  private final List<String> coverage;
-  private final List<String> transferer;
-  private final List<String> runtime;
-  private final List<String> notes;
-  private final List<String> updatedate;
-  private final List<String> updater;
-  private final List<String> publicdate;
+@Table
+public class Metadata {
+  @Id long id;
+  @Column List<String> title;
+  @Column List<String> creator;
+  @Column List<String> description;
+  @Column List<String> date;
+  @Column List<String> year;
+  @Column List<String> subject;
+  @Column List<String> venue;
+  @Column List<String> coverage;
+  @Column List<String> transferer;
+  @Column List<String> runtime;
+  @Column List<String> notes;
+  @Column List<String> updatedate;
+  @Column List<String> updater;
+  @Column List<String> publicdate;
 
   public Metadata(List<String> title, List<String> creator, List<String> description,
       List<String> date, List<String> year, List<String> subject, List<String> venue,

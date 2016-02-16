@@ -20,7 +20,7 @@ import butterknife.OnClick;
 import com.andrewreitz.onthisday.OnThisDayApp;
 import com.andrewreitz.onthisday.R;
 import com.andrewreitz.onthisday.data.SeenNavDrawer;
-import com.andrewreitz.onthisday.ui.common.bus.ToolBarTitleEvent;
+import com.andrewreitz.onthisday.ui.eventbus.ToolBarTitleEvent;
 import com.andrewreitz.onthisday.ui.show.ShowListFragment;
 import com.inkapplications.preferences.BooleanPreference;
 import com.squareup.otto.Bus;

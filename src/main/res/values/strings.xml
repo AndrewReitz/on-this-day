@@ -26,5 +26,8 @@
   <string name="accessibility_repeat">Repeat</string>
   <string name="accessibility_repeat_all">Repeat all</string>
   <string name="accessibility_repeat_one">Repeat one</string>
+  <string name="set_list">Set List</string>
+  <string name="favorite">Favorite</string>
+  <string name="download_show">Download Show</string>
 
 </resources>

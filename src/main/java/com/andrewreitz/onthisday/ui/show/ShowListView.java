@@ -2,9 +2,11 @@ package com.andrewreitz.onthisday.ui.show;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.widget.ImageView;
 import android.widget.ListView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 import butterknife.OnItemClick;
 import com.andrewreitz.onthisday.R;
 import com.andrewreitz.onthisday.data.RedditArchivePair;
@@ -19,6 +21,7 @@ import rx.Subscription;
 import rx.functions.Action1;
 import rx.functions.Action2;
 
+@DebugLog
 public final class ShowListView extends BetterViewAnimator {
   /** The number of shows to pre-load in the list view. */
   private static final int PRE_LOAD_SHOWS = 25;
@@ -34,22 +37,22 @@ public final class ShowListView extends BetterViewAnimator {
     adapter = new ShowListAdapter(context);
   }
 
-  @DebugLog @Override protected void onFinishInflate() {
+  @Override protected void onFinishInflate() {
     super.onFinishInflate();
     ButterKnife.inject(this);
     musicListView.setAdapter(adapter);
   }
 
-  @DebugLog @OnItemClick(R.id.music_list) void onShowClicked(int position) {
+  @OnItemClick(R.id.music_list) void onShowClicked(int position) {
     showClickAction.call(position);
   }
 
   /** Add shows to this list. */
-  @DebugLog public void addShows(List<RedditArchivePair> shows) {
+  public void addShows(List<RedditArchivePair> shows) {
     adapter.add(shows);
   }
 
-  @DebugLog public RedditArchivePair getShowAtPosition(int itemPosition) {
+  public RedditArchivePair getShowAtPosition(int itemPosition) {
     return adapter.getItem(itemPosition);
   }
 
@@ -59,7 +62,7 @@ public final class ShowListView extends BetterViewAnimator {
   }
 
   /** Set a listener that will continually populate the shows list */
-  @DebugLog public void setLoadMoreListener(final Action2<String, Integer> loadMoreListener) {
+  public void setLoadMoreListener(final Action2<String, Integer> loadMoreListener) {
     musicListView.setOnScrollListener(new InfiniteScrollListener(PRE_LOAD_SHOWS) {
       @Override public void loadMore(int page, int totalItemsCount) {
         final RedditArchivePair item = adapter.getItem(totalItemsCount - 1);
@@ -68,7 +71,7 @@ public final class ShowListView extends BetterViewAnimator {
     });
   }
 
-  @DebugLog public void hideSpinner() {
+  public void hideSpinner() {
     setDisplayedChildId(R.id.music_list);
   }
 }

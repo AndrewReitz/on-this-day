@@ -1,4 +1,4 @@
-package com.andrewreitz.onthisday.ui.common.bus;
+package com.andrewreitz.onthisday.ui.eventbus;
 
 /** Event bus event to change the tool bar's title. */
 public final class ToolBarTitleEvent {
